@@ -1,0 +1,157 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+
+    <!-- Template CSS -->
+    <link th:href="@{/assets2/css/main.css}" rel="stylesheet" type="text/css" />
+
+    <title th:text="${title}"></title>
+
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+
+    <!-- Slick -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/slick.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/slick-theme.css}"/>
+
+    <!-- nouislider -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/nouislider.min.css}"/>
+
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
+
+    <!-- Custom stlylesheet -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/style.css}"/>
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div th:replace="~{index::topHeader}"></div>
+    <div th:replace="~{index::mainheader}"></div>
+    <div th:replace="~{index::navigation}"></div>
+    <main class="main-wrap">
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">Order Tracking</h2>
+                    <p>Details for Order</p>
+                </div>
+            </div>
+            <div class="card">
+                <header class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
+                            <span>
+                                <i class="material-icons md-calendar_today"></i> <b>Wed, Aug 13, 2022, 4:34PM</b>
+                            </span> <br>
+                            <small class="text-muted">Order ID: [(${order.id})]</small> <br>
+                            <small class="text-muted" th:if="${order.orderStatus =='DELIVERED'}">Your order has been delivered</small>
+                        </div>
+                    </div>
+                </header> <!-- card-header end// -->
+                <div class="card-body">
+                    <div class="order-tracking mb-100">
+                        <div class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between">
+                            <div class="step" th:classappend="${statusCode>=1 ?'completed':''}">
+                                <div class="step-icon-wrap">
+                                    <div class="step-icon"><i class="material-icons md-shopping_cart"></i></div>
+                                </div>
+                                <h4 class="step-title">Pending</h4>
+                                <small class="text-muted text-sm">15 March 2022</small>
+                            </div>
+                            <div class="step " th:classappend="${statusCode>=2 ?'completed':''}">
+                                <div class="step-icon-wrap">
+                                    <div class="step-icon"><i class="material-icons md-settings"></i></div>
+                                </div>
+                                <h4 class="step-title">Confirmed</h4>
+                                <small class="text-muted text-sm">16 March 2022</small>
+                            </div>
+<!--                            <div class="step completed">-->
+<!--                                <div class="step-icon-wrap">-->
+<!--                                    <div class="step-icon"><i class="material-icons md-shopping_bag"></i></div>-->
+<!--                                </div>-->
+<!--                                <h4 class="step-title">Quality Check</h4>-->
+<!--                                <small class="text-muted text-sm">17 March 2022</small>-->
+<!--                            </div>-->
+                            <div class="step" th:classappend="${statusCode>=3 ?'completed':''}">
+                                <div class="step-icon-wrap">
+                                    <div class="step-icon"><i class="material-icons md-local_shipping"></i></div>
+                                </div>
+                                <h4 class="step-title">Product Shipped</h4>
+                                <small class="text-muted text-sm">18 March 2022</small>
+                            </div>
+                            <div class="step" th:classappend="${statusCode>=4 ?'completed':''}">
+                                <div class="step-icon-wrap">
+                                    <div class="step-icon"><i class="material-icons md-check_circle"></i></div>
+                                </div>
+                                <h4 class="step-title">Product Delivered</h4>
+                                <small class="text-muted text-sm">20 March 2022</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-50 mt-20 order-info-wrap text-center">
+                        <div class="col-md-4">
+                            <article class="icontext align-items-start">                              
+                                <div class="text">
+                                    <h6 class="mb-1">Customer</h6>
+                                    <p class="mb-1" >
+                                        [(${customer.firstName})] <br> [(${customer.username})] <br> [(${customer.phoneNumber})]
+                                    </p>
+
+                                </div>
+                            </article>
+                        </div> <!-- col// -->
+                        <div class="col-md-4">
+                            <article class="icontext align-items-start">                              
+                                <div class="text">
+                                    <h6 class="mb-1">Order info</h6>
+                                    <p class="mb-1">
+                                        Shipping: Fargo express <br> [(${order.paymentStatus})] <br> Status: new
+                                    </p>
+                                </div>
+                            </article>
+                        </div> <!-- col// -->
+<!--                        <div class="col-md-4">-->
+<!--                            <article class="icontext align-items-start">                              -->
+<!--                                <div class="text">-->
+<!--                                    <h6 class="mb-1">Deliver to</h6>-->
+<!--                                    <p class="mb-1">-->
+<!--                                        City: Tashkent, Uzbekistan <br>Block A, House 123, Floor 2 <br> Po Box 10000-->
+<!--                                    </p>-->
+<!--                                </div>-->
+<!--                            </article>-->
+<!--                        </div> &lt;!&ndash; col// &ndash;&gt;-->
+                    </div> <!-- row // -->
+                </div>
+            </div> <!-- card end// -->
+        </section> <!-- content-main end// -->
+    </main>
+    <script th:src="@{/assets2/js/vendors/jquery-3.6.0.min.js}"></script>
+    <script th:src="@{/assets2/js/vendors/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/assets2/js/vendors/select2.min.js}"></script>
+    <script th:src="@{/assets2/js/vendors/perfect-scrollbar.js}"></script>
+    <script th:src="@{/assets2/js/vendors/jquery.fullscreen.min.js}"></script>
+    <!-- Main Script -->
+    <script th:src="@{/assets2/js/main.js}" type="text/javascript"></script>
+</body>
+
+</html>

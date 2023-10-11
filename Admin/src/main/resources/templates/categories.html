@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments :: header}">
+
+    <title>Category</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul th:replace="~{fragments :: sidebar}" > </ul>
+            <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav th:replace="~{fragments::topbar}">
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div th:if="${size==0}">
+                    <p>No Category</p>
+                </div>
+
+                <!-- BUTTON FOR MODAL -->
+                <div class="d-flex">
+                    <button type="button" class="btn btn-primary ml-2 mb-2 " data-toggle="modal" data-target="#exampleModal"  >Add New Category</button>
+                    <form th:action="@{/search-category/0}" method="get" class="ml-3">
+                        <input type="text" id="search" name="keyword" placeholder="Search products">
+                        <button type="submit" class = "btn btn-primary">Search</button>
+                    </form>
+                </div>
+                <div th:if = "${success}" class="text-center alert alert-success">
+                    <p th:text="${success}"></p>
+                </div>
+                <div th:if = "${error}" class="text-center alert alert-danger">
+                    <p th:text="${error}"></p>
+                </div>
+                <div th:if = "${Deleted}" class="text-center alert alert-danger">
+                    <p th:text="${Deleted}"></p>
+                </div>
+                <div th:if = "${Enabled}" class="text-center alert alert-success">
+                    <p th:text="${Enabled}"></p>
+                </div>
+                <div th:if = "${failed}" class="text-center alert alert-danger">
+                    <p th:text="${failed}"></p>
+                </div>
+
+                <table class="table table-bordered" th:if="${size>0}">
+                    <thead>
+                    <tr>
+<!--                        <th scope="col"> Category Index</th>-->
+                        <th scope="col">Category Name</th>
+                        <th scope="col">Edit Category Name</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each=" category: ${categories}">
+<!--                            <th scope="row" th:text="${category.id}"></th>-->
+                            <td  th:text="${category.name}"></td>
+                            <td><a id="editButton" th:href="@{/findById(id=${category.id})}" class="btn btn-primary" >Update</a></td>
+                            <td>
+                                <a th:if = "${category.is_activated()} == true" th:href="@{/delete-category(id=${category.id})}" class="btn btn-danger">Delete</a>
+                                <a th:if = "${category.is_activated()} == false" th:href="@{/enable-category(id=${category.id})}" class="btn btn-success">Enable</a>
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item" th:if="${currentPage != 0 }">
+                            <a class="page-link" href="#" th:href="@{'/categories/'+ ${currentPage - 1}}">Prev</a>
+                        </li>
+                        <li class="page-item" th:each="i:${#numbers.sequence(1,totalPages)}" th:classappend="${currentPage == i - 1 ?'active':''}">
+                            <a class="page-link" href="#" th:href="@{'/categories/'+ ${i - 1}}"><span th:text="${i}"></span></a>
+                        </li>
+                        <li class="page-item" th:if="${currentPage + 1 != totalPages}">
+                            <a class="page-link" th:href="@{'/categories/'+ ${currentPage + 1}}" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer th:replace="~{fragments::footer}"></footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a th:replace="~{fragments:: scroll}"></a>
+            <!-- Logout Modal-->
+
+            <!-- Add Modal-->
+
+
+        <!-- MODAL HERE -->
+
+
+        <div  class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <form th:action="@{/add-category}" method="post" th:object="${categoryDto}">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">New Category</h5>
+                        </div>
+                        <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="recipient-name" class="col-form-label">Name:</label>
+                                    <input type="text" class="form-control" th:field="*{name}" id="recipient-name" pattern="^[A-Za-z0-9\s]+$" required>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+
+                </form>
+            </div>
+
+            <!-- End Modal-->
+        <!-- Change Name category Modal-->
+
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalExample" aria-hidden="true">
+            <form th:action="@{/update-category}" method="put" th:object="${categoryDto}">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editModalExample">Edit Category</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <input type="hidden" id="idEdit" name="id">
+                                <label for="nameEdit" class="col-form-label">Name:</label>
+                                <input type="text" class="form-control"  id="nameEdit" name="name" pattern="^[A-Za-z0-9\s]+$" required>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+
+    <!-- Bootstrap core JavaScript-->
+        <div th:replace="~{fragments::script}"></div>
+        <div th:replace="~{fragments::logoutModel}"></div>
+
+    </div>
+
+<script>
+    $(document).ready(function (){
+        $('table #editButton').on('click', function (event){
+            event.preventDefault();
+            var href = $(this).attr('href');
+            $.get(href, function (category, status){
+                $('#idEdit').val(category.id);
+                $('#nameEdit').val(category.name);
+            });
+            $('#editModal').modal();
+        });
+    });
+</script>
+<script>
+    let name = document.getElementById("recipient-name");
+    name.addEventListener("input", function(e){
+        name.setCustomValidity('');//removes default value
+    });
+    name.addEventListener("invalid", function(e){
+        name.setCustomValidity('Special characters are not allowed');//custom validation message
+    });
+
+    let name = document.getElementById("nameEdit");
+    name.addEventListener("input", function(e){
+        name.setCustomValidity('');//removes default value
+    });
+    name.addEventListener("invalid", function(e){
+        name.setCustomValidity('Special characters are not allowed');//custom validation message
+    });
+</script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+
+<head th:replace="~{fragments :: header}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+</head>
+<body id="page-top">
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <ul th:replace="~{fragments :: sidebar}">
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav th:replace="~{fragments :: topbar}"></nav>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <table class="table table-striped" id="orderDetail">
+                    <thead>
+                    <tr>
+                        <th scope="col">Customer Name</th>
+                        <th scope="col">Order Date</th>
+                        <th scope="col">productName</th>
+                        <th scope="col">productPrice</th>
+                        <th scope="col">Payment Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each = "orderDetail : ${orderDetailList}">
+<!--                        <td th:text="${order.id}"></td>-->
+                        <th scope="row" th:text = "${order.customer.firstName}"></th>
+                        <td th:text = "${order.orderDate}"></td>
+                        <td th:text = "${orderDetail.product.name}"></td>
+                        <td th:text = "${orderDetail.product.costPrice}"></td>
+                        <td th:text = "${order.paymentStatus}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer th:replace="~{fragments :: footer}">
+        </footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a th:replace="~{fragments :: scroll}">
+</a>
+
+<!-- Logout Modal-->
+<div th:replace="~{fragments :: logoutModel}"></div>
+
+<!-- Bootstrap core JavaScript-->
+<div th:replace="~{fragments :: script}"></div>
+<script th:src="@{/js/categories.js}"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script>
+    new DataTable('#orderDetail');
+</script>
+
+</body>
+
+</html>

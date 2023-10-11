@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments::headers}">
+
+
+</head>
+<body>
+<header th:replace="~{fragments::header}"></header>
+	<main class="page">
+	 	<section class="shopping-cart dark">
+	 		<div class="container">
+		        <div class="block-heading">
+		          <h2>Shopping Cart</h2>
+		        </div>
+
+				<div th:if="${flag == false}">
+					<h1 th:text="${check}" class="text-center height-100vh"></h1>
+				</div>
+				<div class="alert alert-warning" role="alert" th:if="${error}">
+					<p th:text="${error}"></p>
+				</div>
+		        <div class="content"  th:if="${flag != false}">
+	 				<div class="row">
+	 					<div class="col-md-12 col-lg-8">
+	 						<div class="items" th:each=" cartitem : ${shoppingCart.cartItem}">
+								<form th:action="@{/update-cart}" method="post">
+				 				<div class="product">
+				 					<div class="row">
+					 					<div class="col-md-3">
+											<img class="img-fluid mx-auto d-block image"  th:src="@{|/img/images/${cartitem.product.productImage[0].getName()}|}">
+					 					</div>
+										<input type="hidden" th:value="${cartitem.product.id}" name="id">
+					 					<div class="col-md-8">
+					 						<div class="info">
+						 						<div class="row">
+							 						<div class="col-md-5 product-name">
+							 							<div class="product-name">
+								 							<a href="#" th:text="${cartitem.product.name}"></a>
+									 					</div>
+							 						</div>
+							 						<div class="col-md-4 quantity">
+							 							<label for="quantity">Quantity:</label>
+							 							<input id="quantity" type="number" name="quantity" th:value="${cartitem.quantity}" class="form-control quantity-input">
+							 						</div>
+							 						<div class="col-md-3 price">
+							 							<span th:text="${cartitem.totalPrice}"></span>
+							 						</div>
+													<div>
+														<button type="submit" class="btn btn-danger"
+																name="action" value="delete" title="Delete">Remove</button>
+														<button type="submit" class="btn btn-primary"
+																name="action" value="update" title="Update">Update</button>
+													</div>
+							 					</div>
+							 				</div>
+					 					</div>
+					 				</div>
+				 				</div>
+								</form>
+							</div>
+						</div>
+			 			<div class="col-md-12 col-lg-4">
+			 				<div class="summary">
+			 					<h3>Summary</h3>
+			 					<div class="summary-item"><span class="text">Subtotal</span><span class="price" th:text="${shoppingCart.totalPrice}">$360</span></div>
+			 					<div class="summary-item"><span class="text">Discount</span><span class="price">$0</span></div>
+			 					<div class="summary-item"><span class="text">Shipping</span><span class="price">$0</span></div>
+			 					<div class="summary-item"><span class="text">Total</span><span class="price" th:text="${shoppingCart.totalPrice}">$360</span></div>
+			 					<a th:href="@{/checkout}"><button type="button"  class="btn btn-primary btn-lg btn-block">Checkout</button></a>
+				 			</div>
+			 			</div>
+		 			</div> 
+		 		</div>
+	 		</div>
+		</section>
+	</main>
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
