@@ -1422,6 +1422,8 @@ textarea.input {
 
 #product-main-img .zoomImg {
   background-color: #FFF;
+  width: 1000px !important;
+  height: 1000px !important;
 }
 
 #product-imgs .product-preview {

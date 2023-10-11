@@ -49,6 +49,7 @@ public class HomeController {
             ShoppingCart shoppingCartItem = customer.getShoppingCart();
 //            System.out.println(shoppingCartItem.getTotalPrice());
                 model.addAttribute("shoppingCart",shoppingCartItem);
+
                 if (shoppingCartItem!=null){
                     session.setAttribute("totalItem",shoppingCartItem.getTotalItems());
                 }
@@ -63,7 +64,7 @@ public class HomeController {
             model.addAttribute("products",products);
         }
 
-
+        model.addAttribute("title","Home Page");
         return "index";
     }
 

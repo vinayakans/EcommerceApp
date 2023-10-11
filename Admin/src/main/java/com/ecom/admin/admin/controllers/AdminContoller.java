@@ -29,13 +29,13 @@ public class AdminContoller {
             Admin admin = adminService.findByUsername(principal.getName());
             model.addAttribute("adminName",admin.getFirstname());
         }
-
         model.addAttribute("title","Home Page");
         Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
         if(authentication == null || authentication instanceof AnonymousAuthenticationToken){
             return "redirect:/login";
         }
         return "index";
+
     }
 
 }
