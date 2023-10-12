@@ -71,18 +71,17 @@ public class CartController {
         return "cart-page";
     }
 
-    @Transactional
     @PostMapping("/add-to-cart")
     public String addToCart(@RequestParam("id") Long productId,
                             @RequestParam(value = "quantity",required = false,defaultValue = "1")int quantity,
-                            Principal principal, Model model, HttpServletRequest request){
+                            Principal principal, HttpServletRequest request,RedirectAttributes redirectAttributes){
         if (principal == null ){
             return "redirect:/login";
         }
-
         Product product = productService.getProductById(productId);
         if ((product.getCurrentQuantity()-quantity)<0){
-            return "redirect:" +request.getHeader("Referer");
+           redirectAttributes.addFlashAttribute ("outOfStock","item out of stock");
+           return "redirect:" +request.getHeader("Referer");
         }
         String username = principal.getName();
         Customer customer = customerService.findByUsername(username);

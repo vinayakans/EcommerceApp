@@ -103,6 +103,7 @@ public class OrderServiceImpl implements OrderService {
     public Order returnProduct(Long id) {
         Order order = orderRepository.getReferenceById(id);
         order.setOrderStatus("returned");
+
         orderRepository.save(order);
         return null;
     }
