@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
@@ -45,18 +46,19 @@
 
                 <!-- Page Heading -->
                 <form class="form-horizontal" id="productForm" th:action="@{/save-product}" method="post"
-                      enctype="multipart/form-data" th:object = "${product}">
+                      enctype="multipart/form-data" th:object = "${product}" onsubmit="return validateForm()">
                     <fieldset>
                         <!-- Form Name -->
-                        <legend>ADD PRODUCTS</legend>
+                        <legend class="ml-4">ADD PRODUCTS</legend>
 
                         <!-- Text input-->
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="product_name">PRODUCT NAME</label>
                             <div class="col-md-4">
                                 <input id="product_name" th:field = "*{name}" name="product_name"
-                                       class="form-control input-md" required="" type="text">
-                                <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></div>
+                                       class="form-control input-md"  type="text">
+                                <div id="product_name_error" class="error"></div>
+<!--                                <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></div>-->
                             </div>
                         </div>
 
@@ -64,7 +66,7 @@
                         <div class="form-group" >
                             <label class="col-md-4 control-label" for="categories">PRODUCT CATEGORY</label>
                             <div class="col-md-4 d-flex">
-                                <select id="categories" th:field = "*{category}" name="categories" class="form-control" required>
+                                <select id="categories" th:field = "*{category}" name="categories" class="form-control">
                                     <option th:value = "null">-SELECT-</option>
                                     <option th:each = "category : ${categories}"
                                             th:value = "${category.id}"
@@ -73,14 +75,16 @@
                                 </select>
                                 <button type="button" class="btn btn-primary ml-3" data-toggle="modal" data-target="#exampleModal" >+</button>
                             </div>
+                            <div id="categories_error" class="error"></div>
                         </div>
 
                         <!-- Text input for Product Desc-->
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="description">PRODUCT DESCRIPTION </label>
                             <div class="col-md-4">
-                                <input id="description" th:field = "*{description}" name="description" class="form-control input-md" required="" type="text">
-                                <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="error"></div>
+                                <input id="description" th:field = "*{description}" name="description" class="form-control input-md"  type="text">
+                                <div id="description_error" class="error"></div>
+<!--                                <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="error"></div>-->
 
                             </div>
                         </div>
@@ -89,8 +93,9 @@
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="available_quantity">AVAILABLE QUANTITY</label>
                             <div class="col-md-4">
-                                <input id="available_quantity" th:field = "*{currentQuantity}" name="available_quantity" class="form-control input-md" required="" type="text">
-                                <span th:if="${#fields.hasErrors('currentQuantity')}" th:errors="*{currentQuantity}" class="error"></span>
+                                <input id="available_quantity" th:field = "*{currentQuantity}" name="available_quantity" class="form-control input-md"  type="text">
+                                <div id="available_quantity_error" class="error"></div>
+<!--                                <span th:if="${#fields.hasErrors('currentQuantity')}" th:errors="*{currentQuantity}" class="error"></span>-->
                             </div>
                         </div>
 
@@ -98,8 +103,9 @@
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="price">PRICE</label>
                             <div class="col-md-4">
-                                <input id="price" name="price" th:field = "*{costPrice}" class="form-control input-md" required="" type="text">
-                                <span th:if="${#fields.hasErrors('costPrice')}" th:errors="*{costPrice }" class="error"></span>
+                                <input id="price" name="price" th:field = "*{costPrice}" class="form-control input-md" type="text">
+                                <div id="price_error" class="error"></div>
+<!--                                <span th:if="${#fields.hasErrors('costPrice')}" th:errors="*{costPrice }" class="error"></span>-->
                             </div>
                         </div>
                         <!-- Text input-->
@@ -109,7 +115,8 @@
                                 <div class="form-group">
                                     <label class="col-md-4 control-label" for="imageProduct">Image Product</label>
                                     <div class="col-md-4">
-                                        <input id="imageProduct" name="imageProduct" class="input-file" type="file" accept="image/*" multiple required>
+                                        <input id="imageProduct" name="imageProduct" class="input-file" type="file" accept="image/*" multiple>
+                                        <div id="imageProduct_error" class="error"></div>
                                     </div>
                                 </div>
                             </div>
@@ -174,31 +181,58 @@
     </div>
         <script th:src="@{/js/categories.js}"></script>
     <script>
-        $(document).ready(function () {
-            $("#productForm").submit(function (event) {
-                event.preventDefault(); // Prevent the default form submission
+        function validateForm() {
+            var productName = document.getElementById("product_name").value;
+            var productDescription = document.getElementById("description").value;
+            var availableQuantity = document.getElementById("available_quantity").value;
+            var price = document.getElementById("price").value;
+            var selectedCategories = document.getElementById("categories").value;
+            var imageProduct = document.getElementById("imageProduct").value;
 
-                // Perform custom validation here
-                var productName = $("#product_name").val();
-                var description = $("#description").val();
-                var availableQuantity = $("#available_quantity").val();
-                var price = $("#price").val();
+            // Reset error messages
+            document.getElementById("product_name_error").textContent = "";
+            document.getElementById("description_error").textContent = "";
+            document.getElementById("available_quantity_error").textContent = "";
+            document.getElementById("price_error").textContent = "";
+            document.getElementById("categories_error").textContent = "";
+            document.getElementById("imageProduct_error").textContent = "";
 
-                if (!productName || !description || !availableQuantity || !price) {
-                    alert("Please fill out all required fields.");
-                    return;
-                }
+            var isValid = true;
 
-                // Add more custom validation rules as needed
-                if (availableQuantity<1){
-                    alert("Quantity can not be Zero or less than Zero")
-                    return;
-                }
+            // Validation for PRODUCT NAME
+            if (selectedCategories === "null"){
+                document.getElementById("categories_error").textContent ="Select any category";
+                isValid = false;
+            }
+            if (imageProduct === null){
+                document.getElementById("imageProduct_error").textContent = "image field cannot be null";
+                isValid = false;
+            }
+            if (productName.trim() === "") {
+                document.getElementById("product_name_error").textContent = "Product name is required";
+                isValid = false;
+            }
 
-                // If validation passes, submit the form
-                this.submit();
-            });
-        });
+            // Validation for PRODUCT DESCRIPTION
+            if (productDescription.trim() === "") {
+                document.getElementById("description_error").textContent = "Product description is required";
+                isValid = false;
+            }
+
+            // Validation for AVAILABLE QUANTITY
+            if (availableQuantity.trim() === "" || isNaN(availableQuantity)||availableQuantity == 0) {
+                document.getElementById("available_quantity_error").textContent = "Invalid quantity";
+                isValid = false;
+            }
+
+            // Validation for PRICE
+            if (price.trim() === "" || isNaN(price)||price <= 0) {
+                document.getElementById("price_error").textContent = "Invalid price";
+                isValid = false;
+            }
+
+            return isValid;
+        }
         document.getElementById("imageProduct").addEventListener("change", function () {
             const fileInput = this;
             const files = fileInput.files;
@@ -222,10 +256,6 @@
             }
         });
     </script>
-
-
-
-
 </body>
 
 </html>

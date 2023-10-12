@@ -55,7 +55,7 @@
 <!--                        <td th:text="${order.id}"></td>-->
                         <th scope="row" th:text = "${order.customer.firstName}"></th>
                         <td th:text = "${order.orderDate}"></td>
-                        <td><select name="order-status" id="order-status" th:if="${order.orderStatus != 'DELIVERED' and order.orderStatus != 'pending'and order.orderStatus != 'cancle'} " th:data-order-id="${order.id}"  onchange="submitSelection(this.getAttribute('data-order-id'))">
+                        <td><select name="order-status" id="order-status" th:if="${order.orderStatus != 'DELIVERED' and order.orderStatus != 'pending'and order.orderStatus != 'cancle' and order.orderStatus != 'returned'}" th:data-order-id="${order.id}"  onchange="submitSelection(this.getAttribute('data-order-id'))">
                             <option value="" >SELECT</option>
                             <option value="SHIPPED">SHIPPED</option>
                             <option value="DELIVERED">DELIVERED</option>

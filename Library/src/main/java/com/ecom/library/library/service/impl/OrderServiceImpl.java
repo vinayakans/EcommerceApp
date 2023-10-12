@@ -102,6 +102,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order returnProduct(Long id) {
         Order order = orderRepository.getReferenceById(id);
+        List<OrderDetails> orderDetailsList = order.getOrderDetailsList();
+            for (OrderDetails orderDetails : orderDetailsList){
+                Product product = orderDetails.getProduct();
+                if (product!=null){
+                    int currentQuantity = product.getCurrentQuantity();
+                    product.setCurrentQuantity(currentQuantity+ orderDetails.getQuantity());
+                    productRepository.save(product);
+                }
+            }
+        order.setPaymentStatus("processing");
         order.setOrderStatus("returned");
 
         orderRepository.save(order);

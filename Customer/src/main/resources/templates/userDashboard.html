@@ -107,7 +107,7 @@
                                                                     th:href="@{/cancle-item/{id}(id = ${order.id})}" class="btn btn-primary">CANCLE</a>
                                                                 </td>
                                                                 <td>
-                                                                    <a th:if="${order.orderStatus != 'cancle'}" th:href="@{/orderTracking/{id}(id = ${order.id})}" class="btn btn-primary">Track Order
+                                                                    <a th:if="${order.orderStatus != 'pending'}" th:href="@{/orderTracking/{id}(id = ${order.id})}" class="btn btn-primary">Track Order
                                                                     </a>
                                                                 </td>
                                                             </tr>

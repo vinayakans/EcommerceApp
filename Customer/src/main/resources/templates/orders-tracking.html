@@ -65,6 +65,10 @@
                             </span> <br>
                             <small class="text-muted">Order ID: [(${order.id})]</small> <br>
                             <small class="text-muted" th:if="${order.orderStatus =='DELIVERED'}">Your order has been delivered</small>
+                            <small class="text-muted" th:if="${order.orderStatus =='SHIPPED'}">Your order has been Shipped</small>
+                            <small class="text-muted" th:if="${order.orderStatus =='CONFIRM'}">Your order has been Confirmed</small>
+                            <small class="text-muted" th:if="${order.orderStatus =='cancle'}">Your order has been Cancled</small>
+                            <small class="text-muted" th:if="${order.orderStatus =='returned'}">Your order has been Returned</small>
                         </div>
                     </div>
                 </header> <!-- card-header end// -->
@@ -125,21 +129,21 @@
                                 <div class="text">
                                     <h6 class="mb-1">Order info</h6>
                                     <p class="mb-1">
-                                        Shipping: Fargo express <br> [(${order.paymentStatus})] <br> Status: new
+                                        Shipping: Fargo express <br> <b>[(${order.paymentStatus})]</b> <br> Status: new
                                     </p>
                                 </div>
                             </article>
                         </div> <!-- col// -->
-<!--                        <div class="col-md-4">-->
-<!--                            <article class="icontext align-items-start">                              -->
-<!--                                <div class="text">-->
-<!--                                    <h6 class="mb-1">Deliver to</h6>-->
-<!--                                    <p class="mb-1">-->
-<!--                                        City: Tashkent, Uzbekistan <br>Block A, House 123, Floor 2 <br> Po Box 10000-->
-<!--                                    </p>-->
-<!--                                </div>-->
-<!--                            </article>-->
-<!--                        </div> &lt;!&ndash; col// &ndash;&gt;-->
+                        <div class="col-md-4">
+                            <article class="icontext align-items-start">
+                                <div class="text">
+                                    <h6 class="mb-1">Delivey Address</h6>
+                                    <p class="mb-1">
+                                        <b>[(${order.customer.firstName})]</b> <br> <b>Address:</b>&nbsp; [(${order.shippingAddress.addressLine1})] <br><b>PhoneNo:</b> &nbsp; [(${order.shippingAddress.phoneNumber})] <br><b>Pincode:</b> &nbsp;[(${order.shippingAddress.pinCode})]
+                                    </p>
+                                </div>
+                            </article>
+                        </div> <!-- col// -->
                     </div> <!-- row // -->
                 </div>
             </div> <!-- card end// -->
