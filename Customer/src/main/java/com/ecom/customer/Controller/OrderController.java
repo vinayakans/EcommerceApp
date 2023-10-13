@@ -36,12 +36,12 @@ public class OrderController {
 
     @PostMapping("/placeOrder")
     public String placeOrder(@RequestParam("selectedAddressId") Long selectedAddressId,
-                             @RequestParam("payment")String payment, Principal principal , Model model){
+                             @RequestParam("payment_option")String payment, Principal principal , Model model){
         if(principal == null){
             return "redirect:/login";
         }
 
-
+        System.out.println(payment);
         Address address = addressService.findById(selectedAddressId);
         Customer customer =customerService.findByUsername(principal.getName());
         if (customer.is_blocked()==true){

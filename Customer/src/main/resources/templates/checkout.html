@@ -216,13 +216,23 @@
 						</div>
 						<div class="payment-method">
 							<div class="input-radio">
-								<input type="radio" name="payment" value="cod" id="payment-1" required >
+								<input type="radio" name="payment_option" value="cod" id="payment-1" required >
 								<label for="payment-1">
 									<span></span>
 									Cash on delivery
 								</label>
 								<div class="caption">
-									<p>Cash on delivery (COD) is a type of transaction where a customer pays for a product upon delivery. Retailers assume a greater financial risk when offering COD as a payment option, as there is a possibility the buyer will decide not to keep the item and send it back without having to pay.</p>
+									<p>Cash on delivery (COD) is a type of transaction where a customer pays for a product upon delivery. Retailers assume a greater</p>
+								</div>
+							</div>
+							<div class="input-radio">
+								<input type="radio" name="payment_option" value="razorpay" id="payment-2" required >
+								<label for="payment-2">
+									<span></span>
+									RazorPay
+								</label>
+								<div class="caption">
+									<p>Online payments are payments that are initiated over the internet for goods or services purchased either online or offline.</p>
 								</div>
 								<div class="text-danger error" id="paymentId-error"></div>
 							</div>
@@ -230,14 +240,6 @@
 
 							<input type="hidden" name="selectedAddressId" id="selectedAddressId" value="">
 
-						<div class="input-checkbox">
-							<input type="checkbox" id="terms">
-							<label for="terms">
-								<span></span>
-								I've read and accept the <a href="#">terms & conditions</a>
-							</label>
-							<div class="text-danger error"></div>
-						</div>
 							<button type="submit" onclick="paymentCheck()" class="btn btn-warning btn-lg btn-block">Place Order</button>
 						</form>
 					</div>
@@ -363,11 +365,6 @@
 								<li><a href="#"><i class="fa fa-cc-discover"></i></a></li>
 								<li><a href="#"><i class="fa fa-cc-amex"></i></a></li>
 							</ul>
-							<span class="copyright">
-								<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-								Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-							</span>
 						</div>
 					</div>
 						<!-- /row -->

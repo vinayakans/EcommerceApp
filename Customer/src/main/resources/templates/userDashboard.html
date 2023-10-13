@@ -89,9 +89,9 @@
                                                     <table class="table">
                                                         <thead>
                                                             <tr>
+                                                                <th>Product</th>
                                                                 <th>Date</th>
                                                                 <th>Status</th>
-                                                                <th>Product</th>
                                                                 <th>Total</th>
                                                                 <th>Actions</th>
                                                                 <th>Track Order</th>
@@ -99,9 +99,11 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr th:each="order:${customerOrderList}">
-                                                                <td th:text="${order.orderDate}"></td>
+                                                                <td>
+                                                                    <span th:each="orderDetail:${order.orderDetailsList}" th:text="${orderDetail.product.name}"></span>
+                                                                </td>
+                                                                <td th:text="${order.delivaryDate}"></td>
                                                                 <td th:text="${order.orderStatus}"></td>
-                                                                <td></td>
                                                                 <td th:text="${order.totalPrice}"></td>
                                                                 <td>
                                                                     <a th:if="${order.orderStatus == 'DELIVERED'}" th:href="@{/return-item/{id}(id = ${order.id})}" class="btn btn-primary">RETURN</a>

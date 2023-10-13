@@ -30,6 +30,7 @@
                         <th scope="col">Customer Name</th>
                         <th scope="col">Order Date</th>
                         <th scope="col">productName</th>
+                        <th scope="col">Quantity</th>
                         <th scope="col">productPrice</th>
                         <th scope="col">Payment Status</th>
                     </tr>
@@ -40,6 +41,7 @@
                         <th scope="row" th:text = "${order.customer.firstName}"></th>
                         <td th:text = "${order.orderDate}"></td>
                         <td th:text = "${orderDetail.product.name}"></td>
+                        <td th:text = "${orderDetail.quantity}"></td>
                         <td th:text = "${orderDetail.product.costPrice}"></td>
                         <td th:text = "${order.paymentStatus}"></td>
                     </tr>
