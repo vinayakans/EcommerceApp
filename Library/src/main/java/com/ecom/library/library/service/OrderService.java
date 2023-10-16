@@ -17,5 +17,9 @@ public interface OrderService {
     void updateOrderStatus(String Order_status,Long Order_id);
     void acceptOrder(String status,Long order_id);
 
+    int totalOrders();
+
+    int totalPending();
+
 
 }

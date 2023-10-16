@@ -7,7 +7,7 @@ import com.ecom.library.library.models.ProductReview;
 import java.util.List;
 
 public interface ProductReviewService {
-    void saveReview(Product product, Customer customer,String review,int rating);
+    void saveReview(Product product, Customer customer,String review,double rating);
 
    List< ProductReview >findByProductId(Long id);
 }

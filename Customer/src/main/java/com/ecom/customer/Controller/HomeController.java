@@ -2,10 +2,7 @@ package com.ecom.customer.Controller;
 
 import com.ecom.library.library.dto.ProductDto;
 import com.ecom.library.library.models.*;
-import com.ecom.library.library.service.CategorySercive;
-import com.ecom.library.library.service.CustomerService;
-import com.ecom.library.library.service.ProductReviewService;
-import com.ecom.library.library.service.ProductService;
+import com.ecom.library.library.service.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Controller;
@@ -24,18 +21,18 @@ import java.util.List;
 public class HomeController {
     private ProductService productService;
     private CustomerService customerService;
-
-    public HomeController(ProductService productService, CustomerService customerService,
-                          ProductReviewService productReviewService, CategorySercive categorySercive) {
-        this.productService = productService;
-        this.customerService = customerService;
-        this.productReviewService = productReviewService;
-        this.categorySercive = categorySercive;
-    }
-
+    private OrderService orderService;
     private ProductReviewService productReviewService;
     private CategorySercive categorySercive;
 
+    public HomeController(ProductService productService, CustomerService customerService, OrderService orderService,
+                          ProductReviewService productReviewService, CategorySercive categorySercive) {
+        this.productService = productService;
+        this.customerService = customerService;
+        this.orderService = orderService;
+        this.productReviewService = productReviewService;
+        this.categorySercive = categorySercive;
+    }
 
     @RequestMapping(value = {"/index","/"},method = RequestMethod.GET)
     public String homeController(Model model, Principal principal, HttpSession session) {
@@ -74,21 +71,39 @@ public class HomeController {
 
          Product product =  productService.findById(id);
         Category itemCategory = product.getCategory();
+         boolean user  = false;
          boolean value = false;
          if(principal !=null){
              value = true;
              Customer customer = customerService.findByUsername(principal.getName());
+             List<Order> orderList = orderService.customerOrderList(customer.getId());
+             for(Order order : orderList){
+                 for(OrderDetails orderDetails:order.getOrderDetailsList()){
+                     if(id == orderDetails.getProduct().getId()&&order.isOrderDelivered()==true){
+                         user = true;
+                     }
+                 }
+             }
+             model.addAttribute("user",user);
              model.addAttribute("name",customer.getFirstName());
+
          }
 
          model.addAttribute("title","Product View");
          model.addAttribute("value",value);
-
+         double sum =0.0;
+         int count =0;
          List<ProductReview> productReviewList = productReviewService.findByProductId(id);
+         for(ProductReview productReview:productReviewList){
+             sum = sum + productReview.getRating();
+             count++;
+         }
+          double averagereview = sum/count;
+        System.out.println(averagereview);
+       model.addAttribute("avgreview",averagereview);
          if (productReviewList!=null){
              model.addAttribute("productReviewList",productReviewList);
              model.addAttribute("date",new Date());
-             System.out.println("notnull");
          }
          System.out.println(product.getName());
              model.addAttribute("product", product);

@@ -20,7 +20,7 @@ public class ProductReviewServiceImpl implements ProductReviewService {
     }
 
     @Override
-    public void saveReview(Product product, Customer customer, String review, int rating) {
+    public void saveReview(Product product, Customer customer, String review, double rating) {
         ProductReview productReview = new ProductReview();
         productReview.setReview(review);
         productReview.setCustomer(customer);

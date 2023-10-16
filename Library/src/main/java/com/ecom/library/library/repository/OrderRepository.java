@@ -15,5 +15,10 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
     Order getById(@Param("id")Long id);
     @Query("select o from Order o where o.customer.id = :id")
     List<Order> customerOrderList(@Param("id")Long id);
+    @Query("select count(*) from Order o ")
+    int orderCount();
+    @Query("select count(*) from Order o where o.orderStatus='pending'")
+    int pendingCount();
+
 
 }

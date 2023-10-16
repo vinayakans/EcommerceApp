@@ -18,6 +18,11 @@
     </properties>
     <dependencies>
         <dependency>
+            <groupId>com.razorpay</groupId>
+            <artifactId>razorpay-java</artifactId>
+            <version>1.4.4</version>
+        </dependency>
+        <dependency>
             <groupId>com.ecom.library</groupId>
             <artifactId>Library</artifactId>
             <version>0.0.1-SNAPSHOT</version>

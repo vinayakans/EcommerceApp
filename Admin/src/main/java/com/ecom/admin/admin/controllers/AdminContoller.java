@@ -3,6 +3,7 @@ package com.ecom.admin.admin.controllers;
 
 import com.ecom.library.library.models.Admin;
 import com.ecom.library.library.service.AdminService;
+import com.ecom.library.library.service.OrderService;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,11 +18,12 @@ import java.security.Principal;
 @Controller
 public class AdminContoller {
     private AdminService adminService;
+    private OrderService orderService;
 
-    public AdminContoller(AdminService adminService) {
+    public AdminContoller(AdminService adminService, OrderService orderService) {
         this.adminService = adminService;
+        this.orderService = orderService;
     }
-
 
     @RequestMapping(value = {"/index","/"},method = RequestMethod.GET)
     public String homePage(Model model, Principal principal){
@@ -29,6 +31,13 @@ public class AdminContoller {
             Admin admin = adminService.findByUsername(principal.getName());
             model.addAttribute("adminName",admin.getFirstname());
         }
+
+        int orderCount = orderService.totalOrders();
+        int pendingCount = orderService.totalPending();
+
+        model.addAttribute("totalOrder",orderCount);
+        model.addAttribute("totalPending",pendingCount);
+
         model.addAttribute("title","Home Page");
         Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
         if(authentication == null || authentication instanceof AnonymousAuthenticationToken){

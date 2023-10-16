@@ -126,8 +126,8 @@
 							<div class="card-header">
 
 								<div class="form-check mb-0">
-									<input class="form-check-input selectCheckBox" type="radio" name="radioButton" th:value="${address.id}" id="selectCheckBox" required>
-									<label class="form-check-label" for="selectCheckBox" style="padding-left: 20px">
+									<input class="form-check-input selectCheckBox" type="radio" name="radioButton" th:value="${address.id}" th:id="'selectCheckBox'+${address.id}" required>
+									<label class="form-check-label" th:for="'selectCheckBox'+${address.id}" style="padding-left: 20px">
 										Select
 									</label>
 								</div>
@@ -190,7 +190,9 @@
 
 					<!-- Order Details -->
 					<div class="col-md-5 order-details">
-						<form method="post" th:action="@{/placeOrder}" id="placeOrder">
+<!--						method="post" th:action="@{/placeOrder}"-->
+
+						<form  id="placeOrder">
 						<div class="section-title text-center">
 							<h3 class="title">Your Order</h3>
 						</div>
@@ -215,18 +217,15 @@
 							</div>
 						</div>
 						<div class="payment-method">
-							<div class="input-radio">
-								<input type="radio" name="payment_option" value="cod" id="payment-1" required >
+
+								<input type="radio" class="payment_option" value="cod" id="payment-1" required >
 								<label for="payment-1">
-									<span></span>
 									Cash on delivery
 								</label>
 								<div class="caption">
 									<p>Cash on delivery (COD) is a type of transaction where a customer pays for a product upon delivery. Retailers assume a greater</p>
 								</div>
-							</div>
-							<div class="input-radio">
-								<input type="radio" name="payment_option" value="razorpay" id="payment-2" required >
+								<input type="radio" class="payment_option" value="razorpay" id="payment-2" required >
 								<label for="payment-2">
 									<span></span>
 									RazorPay
@@ -234,14 +233,20 @@
 								<div class="caption">
 									<p>Online payments are payments that are initiated over the internet for goods or services purchased either online or offline.</p>
 								</div>
-								<div class="text-danger error" id="paymentId-error"></div>
-							</div>
+
+<!--							<div class="input-radio">-->
+
+<!--								<div class="text-danger error" id="paymentId-error"></div>-->
+<!--							</div>-->
 						</div>
 
 							<input type="hidden" name="selectedAddressId" id="selectedAddressId" value="">
+							<input type="hidden" name="paymentMethod" id="paymentMethod" value="">
 
-							<button type="submit" onclick="paymentCheck()" class="btn btn-warning btn-lg btn-block">Place Order</button>
+
 						</form>
+						<button onclick="placeOrder('placeOrder')" class="btn btn-warning btn-lg btn-block">Place Order</button>
+
 					</div>
 					<!-- /Order Details -->
 				</div>
@@ -374,105 +379,122 @@
 			<!-- /bottom footer -->
 		</footer>
 		<!-- /FOOTER -->
-		<script>
-			// Add JavaScript to update the hidden field when a radio button is selected
-			var selectCheckBoxes = document.querySelectorAll('.selectCheckBox');
+		<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+			<script>
+					function placeOrder(formID) {
+					const checkedAddress = $('.selectCheckBox:checked').val();
+					const paymentMethod = $('.payment_option:checked').val();
+						// console.log(checkedAddress)
+						// console.log(paymentMethod)
 
-			selectCheckBoxes.forEach(function(checkbox) {
-				checkbox.addEventListener('change', function() {
-					if (this.checked) {
-						// Update the hidden field with the selected address ID
-						document.getElementById('selectedAddressId').value = this.value;
-					}else{
-						alert("Please select shipping address!!")
-					}
-				});
-			});
-		</script>
-		<script>
-			document.addEventListener("DOMContentLoaded", function() {
-				const addressForm = document.getElementById("addressForm");
-				const addressLine1 = document.getElementsByName("addressLine1")[0];
-				const addressLine2 = document.getElementsByName("addressLine2")[0];
-				const city = document.getElementsByName("city")[0];
-				const state = document.getElementsByName("state")[0];
-				const country = document.getElementsByName("country")[0];
-				const pinCode = document.getElementsByName("pinCode")[0];
-				const phoneNumber = document.getElementsByName("phoneNumber")[0];
+					if(checkedAddress === undefined ){
+					alert("Please choose a shipping address!!")
+				    } else {
 
-				addressForm.addEventListener("submit", function(event) {
-					let valid = true;
-					if (addressLine1.value.trim() === "") {
-						valid = false;
-						addressLine1.nextElementSibling.innerHTML = "Address Line 1 is required.";
-					} else {
-						addressLine1.nextElementSibling.innerHTML = "";
-					}
-					if (city.value.trim() === "") {
-						valid = false;
-						city.nextElementSibling.innerHTML = "City is required.";
-					} else {
-						city.nextElementSibling.innerHTML = "";
-					}
-					if (state.value.trim() === "") {
-						valid = false;
-						state.nextElementSibling.innerHTML = "State is required.";
-					} else {
-						state.nextElementSibling.innerHTML = "";
-					}
-					if (country.value.trim() === "") {
-						valid = false;
-						country.nextElementSibling.innerHTML = "Country is required.";
-					} else {
-						country.nextElementSibling.innerHTML = "";
-					}
-					const pinCodePattern = /^\d{6}$/;
-					if (!pinCodePattern.test(pinCode.value.trim())) {
-						valid = false;
-						pinCode.nextElementSibling.innerHTML = "Pin Code must be 6 digits.";
-					} else {
-						pinCode.nextElementSibling.innerHTML = "";
-					}
-					const phoneNumberPattern = /^\d{10}$/;
-					if (!phoneNumberPattern.test(phoneNumber.value.trim())) {
-						valid = false;
-						phoneNumber.nextElementSibling.innerHTML = "Phone Number must be 10 digits.";
-					} else {
-						phoneNumber.nextElementSibling.innerHTML = "";
-					}
+					// const addressId =document.getElementById("selectedAddressId");
+					// console.log(addressId)
+					// const payment_Method= document.getElementById("payment_option");
+					// console.log(payment_Method)
+					// addressId.value = checkedAddress;
+					// payment_Method.value = payment_Method;
+					// 	console.log(checkedAddress.value)
+					// 	console.log(payment_Method.value)
 
-					if (!valid) {
-						event.preventDefault();
-					}
-				});
-			});
-		</script>
-
-		<script>
-			document.addEventListener("DOMContentLoaded", function () {
-				const placeOrderForm = document.getElementById("placeOrder");
-				const selectCheckBox = document.getElementById("selectCheckBox");
-
-				placeOrderForm.addEventListener("submit", function (event) {
-					if (!selectCheckBox.checked) {
-						alert("Please select an address before placing your order.");
-						event.preventDefault(); // Prevent form submission if the radio button is not selected.
-					}
-				});
-			});
-		</script>
-
-		<script>
-			function paymentCheck(){
-				var paymentMethod = document.getElementById("payment-1").checked
-				console.log(paymentMethod)
-				if (!paymentMethod){
-					console.log(paymentMethod)
-					document.getElementById("paymentId-error").innerHTML("error")
-					return
+					paymentStart(checkedAddress,paymentMethod);
 				}
-			}
-		</script>
+				}
+					const paymentStart = (addressId,payment_Method) => {
+					console.log(addressId);
+					console.log(payment_Method);
+
+					$.ajax(
+				{
+					url:'/shop/placeOrder',
+					data:JSON.stringify({addressId:addressId,
+					payment_Method:payment_Method}),
+					contentType: 'application/json',
+					type:'POST',
+					dataType:'json',
+					success:function(response){
+					console.log(response)
+					if(response.status == "created"){
+					let options ={
+					key:'rzp_test_NtvmKraF0rlqhk',
+					amount: response.amount,
+					currency:'INR',
+					name:'Myphonein',
+					description:'Order Payment',
+					image:'/imgs/theme/logo1.png',
+					order_id:response.id,
+					handler:function(response){
+					console.log(response.razorpay_payment_id);
+					console.log(response.razorpay_order_id);
+					console.log(response.razorpay_signature);
+					verifyPayment(response);
+
+				},
+					prefill: {
+					name:"",
+					email:"",
+					contact:""
+				},
+					notes:{
+					address:"Trendy Threads"
+				},
+					theme:{
+					color: "#3399cc"
+				}
+				};
+					let rzp = new Razorpay(options);
+
+					rzp.on('payment.failed', function (response){
+					console.log(response.error.code);
+					console.log(response.error.description);
+					console.log(response.error.source);
+					console.log(response.error.step);
+					console.log(response.error.reason);
+					console.log(response.error.metadata.order_id);
+					console.log(response.error.metadata.payment_id);
+				});
+
+					rzp.open();
+				}else if(response.status=="Cash"){
+					location.href='/user/order-confirmation';
+
+				}else if(response.status=="Wallet"){
+					location.href='/user/order-confirmation';
+
+				}
+
+				},
+					error:function(error){
+					console.log(error)
+					alert("Something went wrong")
+				}
+				}
+					)
+
+
+				};
+
+					function verifyPayment(payment){
+					$.ajax({
+						url:'/user/verify-payment',
+						method: 'post',
+						data:JSON.stringify(payment),
+						contentType: 'application/json',
+						dataType:'json',
+						success:(response)=>{
+							if(response.status){
+								alert("congrats!! Payment successful");
+								location.href='/user/order-confirmation'
+							} else{
+								alert("Payment failed!")
+							}
+						}
+					});
+				}
+			</script>
 
 
 

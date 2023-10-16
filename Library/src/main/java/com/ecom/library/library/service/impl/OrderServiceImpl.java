@@ -71,6 +71,7 @@ public class OrderServiceImpl implements OrderService {
         return orderList;
     }
 
+
     @Override
     public Order findById(Long id) {
         return orderRepository.getReferenceById(id);
@@ -145,5 +146,16 @@ public class OrderServiceImpl implements OrderService {
         order.setDelivaryDate(ofFuture);
         order.setOrderStatus(status);
         orderRepository.save(order);
+    }
+
+    @Override
+    public int totalOrders() {
+
+        return orderRepository.orderCount();
+    }
+
+    @Override
+    public int totalPending() {
+        return orderRepository.pendingCount();
     }
 }

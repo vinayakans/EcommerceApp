@@ -29,7 +29,7 @@ public class ProductReviewController {
 
     @PostMapping("/add-review")
     public String addReview(@RequestParam("product_id")Long product_id,
-                            @RequestParam("rating") int rating,
+                            @RequestParam("rating") double rating,
                             @RequestParam("textAreaExample")String reviewText, Principal principal, Model model,
                             RedirectAttributes redirectAttributes){
         if(principal == null){
