@@ -70,7 +70,6 @@ public class CartController {
         System.out.println();
         return "cart-page";
     }
-
     @PostMapping("/add-to-cart")
     public String addToCart(@RequestParam("id") Long productId,
                             @RequestParam(value = "quantity",required = false,defaultValue = "1")int quantity,

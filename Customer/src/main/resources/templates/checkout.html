@@ -216,29 +216,38 @@
 								<div><strong class="order-total" th:text="${shoppingCart.totalPrice}"></strong></div>
 							</div>
 						</div>
-						<div class="payment-method">
+<!--						<div class="payment-method">-->
+<!--								<input type="radio" class="payment_option" value="cod" id="payment-1" required >-->
+<!--								<label for="payment-1">-->
+<!--									Cash on delivery-->
+<!--								</label>-->
+<!--								<div class="caption">-->
+<!--									<p>Cash on delivery (COD) is a type of transaction where a customer pays for a product upon delivery. Retailers assume a greater</p>-->
+<!--								</div>-->
+<!--								<input type="radio" class="payment_option" value="razorpay" id="payment-2" required >-->
+<!--								<label for="payment-2">-->
+<!--									<span></span>-->
+<!--									RazorPay-->
+<!--								</label>-->
+<!--								<div class="caption">-->
+<!--									<p>Online payments are payments that are initiated over the internet for goods or services purchased either online or offline.</p>-->
+<!--								</div>-->
 
-								<input type="radio" class="payment_option" value="cod" id="payment-1" required >
-								<label for="payment-1">
-									Cash on delivery
-								</label>
-								<div class="caption">
-									<p>Cash on delivery (COD) is a type of transaction where a customer pays for a product upon delivery. Retailers assume a greater</p>
+<!--&lt;!&ndash;							<div class="input-radio">&ndash;&gt;-->
+
+<!--&lt;!&ndash;								<div class="text-danger error" id="paymentId-error"></div>&ndash;&gt;-->
+<!--&lt;!&ndash;							</div>&ndash;&gt;-->
+<!--						</div>-->
+							<div class="payment-type">
+								<div class="d-block">
+									<input type="radio" class="payment-method" value="cod" id="payment-1">
+									<label for="payment-1"><b>Cash On Delivery</b></label>
 								</div>
-								<input type="radio" class="payment_option" value="razorpay" id="payment-2" required >
-								<label for="payment-2">
-									<span></span>
-									RazorPay
-								</label>
-								<div class="caption">
-									<p>Online payments are payments that are initiated over the internet for goods or services purchased either online or offline.</p>
+								<div class="d-block">
+									<input type="radio" class="payment-method" value="cod" id="payment-2">
+									<label for="payment-2"><b>Online Payment</b></label>
 								</div>
-
-<!--							<div class="input-radio">-->
-
-<!--								<div class="text-danger error" id="paymentId-error"></div>-->
-<!--							</div>-->
-						</div>
+							</div>
 
 							<input type="hidden" name="selectedAddressId" id="selectedAddressId" value="">
 							<input type="hidden" name="paymentMethod" id="paymentMethod" value="">

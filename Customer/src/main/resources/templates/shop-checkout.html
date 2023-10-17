@@ -1,0 +1,365 @@
+﻿<!DOCTYPE html>
+<html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Template CSS -->
+    <link rel="stylesheet" th:href="@{/assets1/css/main.css?v=3.4}">
+    <title th:text="${title}"></title>
+
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+
+    <!-- Slick -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/slick.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/slick-theme.css}"/>
+
+    <!-- nouislider -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/nouislider.min.css}"/>
+
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
+
+    <!-- Custom stlylesheet -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/style.css}"/>
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+    <header th:replace="~{fragments::header}">
+
+    </header>
+
+    <div class="mobile-header-active mobile-header-wrapper-style">
+        <div class="mobile-header-wrapper-inner">
+            <div class="mobile-header-top">
+                <div class="mobile-header-logo">
+                    <a href="index.html"><img src="assets/imgs/theme/logo.svg" alt="logo"></a>
+                </div>
+                <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
+                    <button class="close-style search-close">
+                        <i class="icon-top"></i>
+                        <i class="icon-bottom"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="mobile-header-content-area">
+                <div class="mobile-search search-style-3 mobile-header-border">
+                    <form action="#">
+                        <input type="text" placeholder="Search for items…">
+                        <button type="submit"><i class="fi-rs-search"></i></button>
+                    </form>
+                </div>
+                <div class="mobile-menu-wrap mobile-header-border">
+                    <div class="main-categori-wrap mobile-header-border">
+                        <a class="categori-button-active-2" href="#">
+                            <span class="fi-rs-apps"></span> Browse Categories
+                        </a>
+                        <div class="categori-dropdown-wrap categori-dropdown-active-small">
+                            <ul>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-dress"></i>Women's Clothing</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-tshirt"></i>Men's Clothing</a></li>
+                                <li> <a href="shop-grid-right.html"><i class="evara-font-smartphone"></i> Cellphones</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-desktop"></i>Computer & Office</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-cpu"></i>Consumer Electronics</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-home"></i>Home & Garden</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-high-heels"></i>Shoes</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-teddy-bear"></i>Mother & Kids</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-kite"></i>Outdoor fun</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- mobile menu start -->
+                    <nav>
+                        <ul class="mobile-menu">
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="index.html">Home</a>
+                                <ul class="dropdown">
+                                    <li><a href="index.html">Home 1</a></li>
+                                    <li><a href="index-2.html">Home 2</a></li>
+                                    <li><a href="index-3.html">Home 3</a></li>
+                                    <li><a href="index-4.html">Home 4</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="shop-grid-right.html">shop</a>
+                                <ul class="dropdown">
+                                    <li><a href="shop-grid-right.html">Shop Grid – Right Sidebar</a></li>
+                                    <li><a href="shop-grid-left.html">Shop Grid – Left Sidebar</a></li>
+                                    <li><a href="shop-list-right.html">Shop List – Right Sidebar</a></li>
+                                    <li><a href="shop-list-left.html">Shop List – Left Sidebar</a></li>
+                                    <li><a href="shop-fullwidth.html">Shop - Wide</a></li>
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Single Product</a>
+                                        <ul class="dropdown">
+                                            <li><a href="shop-product-right.html">Product – Right Sidebar</a></li>
+                                            <li><a href="shop-product-left.html">Product – Left Sidebar</a></li>
+                                            <li><a href="shop-product-full.html">Product – No sidebar</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="shop-filter.html">Shop – Filter</a></li>
+                                    <li><a href="shop-wishlist.html">Shop – Wishlist</a></li>
+                                    <li><a href="shop-cart.html">Shop – Cart</a></li>
+                                    <li><a href="shop-checkout.html">Shop – Checkout</a></li>
+                                    <li><a href="shop-compare.html">Shop – Compare</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Mega menu</a>
+                                <ul class="dropdown">
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Women's Fashion</a>
+                                        <ul class="dropdown">
+                                            <li><a href="shop-product-right.html">Dresses</a></li>
+                                            <li><a href="shop-product-right.html">Blouses & Shirts</a></li>
+                                            <li><a href="shop-product-right.html">Hoodies & Sweatshirts</a></li>
+                                            <li><a href="shop-product-right.html">Women's Sets</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Men's Fashion</a>
+                                        <ul class="dropdown">
+                                            <li><a href="shop-product-right.html">Jackets</a></li>
+                                            <li><a href="shop-product-right.html">Casual Faux Leather</a></li>
+                                            <li><a href="shop-product-right.html">Genuine Leather</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Technology</a>
+                                        <ul class="dropdown">
+                                            <li><a href="shop-product-right.html">Gaming Laptops</a></li>
+                                            <li><a href="shop-product-right.html">Ultraslim Laptops</a></li>
+                                            <li><a href="shop-product-right.html">Tablets</a></li>
+                                            <li><a href="shop-product-right.html">Laptop Accessories</a></li>
+                                            <li><a href="shop-product-right.html">Tablet Accessories</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="blog-category-fullwidth.html">Blog</a>
+                                <ul class="dropdown">
+                                    <li><a href="blog-category-grid.html">Blog Category Grid</a></li>
+                                    <li><a href="blog-category-list.html">Blog Category List</a></li>
+                                    <li><a href="blog-category-big.html">Blog Category Big</a></li>
+                                    <li><a href="blog-category-fullwidth.html">Blog Category Wide</a></li>
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Single Product Layout</a>
+                                        <ul class="dropdown">
+                                            <li><a href="blog-post-left.html">Left Sidebar</a></li>
+                                            <li><a href="blog-post-right.html">Right Sidebar</a></li>
+                                            <li><a href="blog-post-fullwidth.html">No Sidebar</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Pages</a>
+                                <ul class="dropdown">
+                                    <li><a href="page-about.html">About Us</a></li>
+                                    <li><a href="page-contact.html">Contact</a></li>
+                                    <li><a href="page-account.html">My Account</a></li>
+                                    <li><a href="page-login-register.html">login/register</a></li>
+                                    <li><a href="page-purchase-guide.html">Purchase Guide</a></li>
+                                    <li><a href="page-privacy-policy.html">Privacy Policy</a></li>
+                                    <li><a href="page-terms.html">Terms of Service</a></li>
+                                    <li><a href="page-404.html">404 Page</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Language</a>
+                                <ul class="dropdown">
+                                    <li><a href="#">English</a></li>
+                                    <li><a href="#">French</a></li>
+                                    <li><a href="#">German</a></li>
+                                    <li><a href="#">Spanish</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                    <!-- mobile menu end -->
+                </div>
+                <div class="mobile-header-info-wrap mobile-header-border">
+                    <div class="single-mobile-header-info mt-30">
+                        <a  href="page-contact.html"> Our location </a>
+                    </div>
+                    <div class="single-mobile-header-info">
+                        <a href="page-login-register.html">Log In / Sign Up </a>
+                    </div>
+                    <div class="single-mobile-header-info">
+                        <a href="#">(+01) - 2345 - 6789 </a>
+                    </div>
+                </div>
+                <div class="mobile-social-icon">
+                    <h5 class="mb-15 text-grey-4">Follow Us</h5>
+                    <a href="#"><img src="assets1/imgs/theme/icons/icon-facebook.svg" alt=""></a>
+                    <a href="#"><img src="assets1/imgs/theme/icons/icon-twitter.svg" alt=""></a>
+                    <a href="#"><img src="assets1/imgs/theme/icons/icon-instagram.svg" alt=""></a>
+                    <a href="#"><img src="assets1/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
+                    <a href="#"><img src="assets1/imgs/theme/icons/icon-youtube.svg" alt=""></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <main class="main">
+        <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="index.html" rel="nofollow">Home</a>
+                    <span></span> Shop
+                    <span></span> Checkout
+                </div>
+            </div>
+        </div>
+        <section class="mt-50 mb-50">
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-25">
+                            <h4>Add New Address</h4>
+                        </div>
+                        <form method="post" th:action="">
+                            <div class="form-group">
+                                <input type="text" required="" name="fname" placeholder="First name *">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" required="" name="lname" placeholder="Last name *">
+                            </div>
+                            <div class="form-group">
+                                <input required="" type="text" name="cname" placeholder="Company Name">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="billing_address" required="" placeholder="Address *">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="billing_address2" required="" placeholder="Address line2">
+                            </div>
+                            <div class="form-group">
+                                <input required="" type="text" name="city" placeholder="City / Town *">
+                            </div>
+                            <div class="form-group">
+                                <input required="" type="text" name="state" placeholder="State / County *">
+                            </div>
+                            <div class="form-group">
+                                <input required="" type="text" name="zipcode" placeholder="Postcode / ZIP *">
+                            </div>
+                            <div class="form-group">
+                                <input required="" type="text" name="phone" placeholder="Phone *">
+                            </div>
+                            <div class="form-group">
+                                <input required="" type="text" name="email" placeholder="Email address *">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="order_review">
+                            <div class="mb-20">
+                                <h4>Your Orders</h4>
+                            </div>
+                            <div class="table-responsive order_table text-center">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="2">Product</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="cartItem : ${shoppingCart.cartItem}">
+                                            <td class="image product-thumbnail">
+                                                <img th:src="@{|/img/images/${cartItem.product.productImage[0].getName}|}" alt="invalid Image"></td>
+                                            <td>
+                                                <h5><a href="#" th:text="${cartItem.product.name}"></a></h5> <span class="product-qty" th:text="${cartItem.quantity}">x 2</span>
+                                            </td>
+                                            <td th:text="${cartItem.product.costPrice}">$180.00</td>
+                                        </tr>
+                                        <tr>
+                                            <th>SubTotal</th>
+                                            <td class="product-subtotal" colspan="2" th:text="${shoppingCart.totalPrice}"></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Shipping</th>
+                                            <td colspan="2"><em>Free Shipping</em></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Total</th>
+                                            <td colspan="2" class="product-subtotal"><span class="font-xl text-brand fw-900"
+                                                                                           th:text="${shoppingCart.totalPrice}"></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+                            <div class="payment_method">
+                                <div class="mb-25">
+                                    <h5>Payment</h5>
+                                </div>
+                                <div class="payment_option">
+<!--                                    <div class="custome-radio">-->
+<!--                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios3" checked="">-->
+<!--                                        <label class="form-check-label" for="exampleRadios3" data-bs-toggle="collapse" data-target="#bankTranfer" aria-controls="bankTranfer">Direct Bank Transfer</label>-->
+<!--                                        <div class="form-group collapse in" id="bankTranfer">-->
+<!--                                            <p class="text-muted mt-5">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration. </p>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+                                    <div class="custome-radio">
+                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios4" checked="">
+                                        <label class="form-check-label" for="exampleRadios4" data-bs-toggle="collapse" data-target="#checkPayment" aria-controls="checkPayment">Cash On Delivery</label>
+                                        <div class="form-group collapse in" id="checkPayment">
+                                            <p class="text-muted mt-5">Cash on delivery (COD) is a type of transaction where a customer pays for a product upon delivery. </p>
+                                        </div>
+                                    </div>
+                                    <div class="custome-radio">
+                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios5" checked="">
+                                        <label class="form-check-label" for="exampleRadios5" data-bs-toggle="collapse" data-target="#paypal" aria-controls="paypal">Razorpay</label>
+                                        <div class="form-group collapse in" id="paypal">
+                                            <p class="text-muted mt-5">Pay via Razorpay; you can pay with your credit card if you don't have a Razorpay account.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#" class="btn btn-fill-out btn-block mt-30">Place Order</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Vendor JS-->
+    <script th:src="@{/assets1/js/vendor/jquery-3.6.0.min.js}"></script>
+    <script th:src="@{/assets1/js/vendor/jquery-migrate-3.3.0.min.js}"></script>
+    <script th:src="@{/assets1/js/vendor/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/assets1/js/plugins/slick.js}"></script>
+    <script th:src="@{/assets1/js/plugins/jquery.syotimer.min.js}"></script>
+    <script th:src="@{/assets1/js/plugins/wow.js}"></script>
+    <script th:src="@{/assets1/js/plugins/jquery-ui.js}"></script>
+    <script th:src="@{/assets1/js/plugins/perfect-scrollbar.js}"></script>
+    <script th:src="@{/assets1/js/plugins/magnific-popup.js}"></script>
+    <script th:src="@{/assets1/js/plugins/select2.min.js}"></script>
+    <script th:src="@{/assets1/js/plugins/waypoints.js}"></script>
+    <script th:src="@{/assets1/js/plugins/counterup.js}"></script>
+    <script th:src="@{/assets1/js/plugins/jquery.countdown.min.js}"></script>
+    <script th:src="@{/assets1/js/plugins/images-loaded.js}"></script>
+    <script th:src="@{/assets1/js/plugins/isotope.js}"></script>
+    <script th:src="@{/assets1/js/plugins/scrollup.js}"></script>
+    <script th:src="@{/assets1/js/plugins/jquery.vticker-min.js}"></script>
+    <!-- Template  JS -->
+    <script th:src="@{/assets1/js/main.js?v=3.4}"></script>
+    <script th:src="@{/assets1/js/shop.js?v=3.4}"></script>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/slick.min.js}"></script>
+    <script th:src="@{/js/nouislider.min.js}"></script>
+    <script th:src="@{/js/jquery.zoom.min.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
+</body>
+
+</html>

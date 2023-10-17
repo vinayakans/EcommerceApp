@@ -927,8 +927,8 @@ button.submit:hover, button[type='submit']:hover {
   padding: 12px 30px;
   border-radius: 4px;
   color: #fff;
-  border: 1px solid #046963;
-  background-color: #088178;
+  border: 1px solid #0a0a18;
+  background-color: #0a0a18;
   cursor: pointer;
   -webkit-transition: all 300ms linear 0s;
   transition: all 300ms linear 0s;
@@ -936,7 +936,7 @@ button.submit:hover, button[type='submit']:hover {
 }
 
 .btn:hover, .button:hover {
-  background-color: #046963;
+  background-color: #0a0a18;
 }
 
 .btn.btn-sm, .button.btn-sm {
@@ -1326,8 +1326,8 @@ label {
 }
 
 .custome-checkbox input[type="checkbox"]:checked + .form-check-label::before {
-  background-color: #088178;
-  border-color: #088178;
+  background-color: #0F0F0F;
+  border-color: #0F0F0F;
 }
 
 .custome-checkbox input[type="checkbox"]:checked + .form-check-label::after {
@@ -4764,7 +4764,7 @@ table .product-thumbnail img {
 
 .custome-radio input[type="radio"]:checked + .form-check-label::after {
   opacity: 1;
-  background-color: #088178;
+  background-color: #0F0F0F;
 }
 
 .related-products .product-img-action-wrap {

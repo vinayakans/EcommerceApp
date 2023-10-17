@@ -45,11 +45,11 @@ public class CheckOutController {
         if(shoppingCartItem == null){
             System.out.println("nullified");
             model.addAttribute("check","the cart is empty");
+            return "redirect:/cart";
         }
         else {
             model.addAttribute("shoppingCart",shoppingCartItem);
         }
-        System.out.println();
         List<Address> addressList = addressRepository.findAllById(customer.getId());
         if (addressList == null){
             model.addAttribute("addressNull","NO Shipping Addresses");
@@ -58,7 +58,8 @@ public class CheckOutController {
 
         model.addAttribute("addressDto",new AddressDto());
 
-       return "checkout";
+//       return "checkout";
+        return "shop-checkout";
     }
 
 }
