@@ -363,16 +363,101 @@
     <footer th:replace="~{fragments::footer}">
 
     </footer>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
-        function placeOrder(formId){
+        function placeOrder(formId) {
             const checkedAddress = $('.selectCheckBox:checked').val();
-            const paymentMethod = $('input[name = "payment_option"]:checked').val();
-            if(!checkedAddress){
+            const payment_option = $('input[name = "payment_option"]:checked').val();
+            if (!checkedAddress) {
                 alert("choose a shipping address")
                 return;
-            }
-            console.log(checkedAddress)
+            }else {
+            const addressId = document.getElementById("addressId");
+            const paymentMethod = document.getElementById("paymentMethod");
+            addressId.value = checkedAddress;
+            paymentMethod.value = payment_option;
+
+            paymentStart(addressId.value, paymentMethod.value);
+
+             }
+        }
+        const paymentStart = (addressId,paymentMethod) => {
+            console.log(addressId)
             console.log(paymentMethod)
+            $.ajax({
+                url: '/shop/placeOrder',
+                data: JSON.stringify({addressId: addressId, paymentMethod: paymentMethod}),
+                contentType: 'application/json',
+                type: 'POST',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status == "created") {
+                        let options = {
+                            key: 'rzp_test_NtvmKraF0rlqhk',
+                            amount: response.amount,
+                            currency: 'INR',
+                            name: 'Myphone.IN',
+                            description: 'Order Payment',
+                            image: '/imgs/theme/logo.svg',
+                            order_id: response.id,
+                            handler: function (response) {
+                                console.log(response.razorpay_payment_id);
+                                console.log(response.razorpay_order_id);
+                                console.log(response.razorpay_signature);
+                                verifyPayment(response);
+                            },
+                            prefill: {
+                                name: "",
+                                email: "",
+                                contact: ""
+                            },
+                            notes: {
+                                address: "Myphone.IN"
+                            },
+                            theme: {
+                                color: "#3399cc"
+                            }
+                        };
+                        let rzp = new Razorpay(options);
+
+                        rzp.on('payment.failed', function (response) {
+                            console.log(response.error.code);
+                            console.log(response.error.description);
+                            console.log(response.error.source);
+                            console.log(response.error.step);
+                            console.log(response.error.reason);
+                            console.log(response.error.metadata.order_id);
+                            console.log(response.error.metadata.payment_id);
+                        });
+                        rzp.open();
+                    } else if (response.status == "Cash") {
+                        location.href = '/order-confirmation';
+                    }
+
+                },
+                error: function (error) {
+                    console.log(error)
+                    alert("something went wrong")
+                }
+            });
+
+            function verifyPayment(payment) {
+                $.ajax({
+                    url: 'shop/verify-payment',
+                    method: 'post',
+                    data: JSON.stringify(payment),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    success: (response) => {
+                        if (response.status) {
+                            alert("congrats!! Payment successful");
+                            location.href = '/order-confirmation'
+                        } else {
+                            alert("Payment failed!")
+                        }
+                    }
+                });
+            }
         }
     </script>
     <!-- Vendor JS-->

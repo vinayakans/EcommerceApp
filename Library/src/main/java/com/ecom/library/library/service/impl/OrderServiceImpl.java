@@ -31,11 +31,10 @@ public class OrderServiceImpl implements OrderService {
     private ShoppingCartServices shoppingCartServices;
 
     @Override
-    public void saveOrder(Customer customer, Address address, ShoppingCart cart,String payment) {
+    public Order saveOrder(Customer customer, Address address, ShoppingCart cart,String payment) {
         Order order = new Order();
         order.setOrderDate(new Date());
         order.setCustomer(customer);
-        order.setOrderStatus("pending");
         order.setPaymentMethod(payment);
         order.setPaymentStatus("pending");
         order.setShippingFee(0.0);
@@ -61,8 +60,17 @@ public class OrderServiceImpl implements OrderService {
             orderDetailsList.add(orderDetails);
         }
         order.setOrderDetailsList(orderDetailsList);
-        orderRepository.save(order);
-        shoppingCartServices.clearCart(cart);
+        if (payment.equals("cod")){
+
+            order.setOrderStatus("pending");
+            shoppingCartServices.clearCart(cart);
+
+        } else if (payment.equals("wallet")) {
+
+            order.setOrderStatus("pending");
+            shoppingCartServices.clearCart(cart);
+        }
+      return orderRepository.save(order);
     }
 
     @Override
@@ -157,5 +165,21 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public int totalPending() {
         return orderRepository.pendingCount();
+    }
+
+    @Override
+    public Order findOrderById(Long id) {
+        return orderRepository.getReferenceById(id);
+    }
+
+    @Override
+    public void updatePayment(Order order, boolean status) {
+        if (status){
+            order.setPaymentStatus("paid");
+            orderRepository.save(order);
+        }else {
+            order.setPaymentStatus("faild");
+            orderRepository.save(order);
+        }
     }
 }

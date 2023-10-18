@@ -8,15 +8,20 @@ import com.ecom.library.library.service.AddressService;
 import com.ecom.library.library.service.CustomerService;
 import com.ecom.library.library.service.OrderService;
 import com.ecom.library.library.service.ShoppingCartServices;
+import com.razorpay.RazorpayClient;
+import com.razorpay.Utils;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
+import org.apache.catalina.LifecycleState;
+import org.json.JSONObject;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class OrderController {
@@ -35,26 +40,71 @@ public class OrderController {
     private AddressService addressService;
 
     @PostMapping("/placeOrder")
-    public String placeOrder(@RequestParam("selectedAddressId") Long selectedAddressId,
-                             @RequestParam("payment_option")String payment, Principal principal , Model model){
+    @ResponseBody
+    public String placeOrder(@RequestBody Map<String,Object> jsonData, Principal principal , HttpSession session,Model model) throws Exception{
         if(principal == null){
             return "redirect:/login";
         }
 
-        System.out.println(payment);
+        Long selectedAddressId = Long.parseLong(jsonData.get("addressId").toString());
+        String payment = jsonData.get("paymentMethod").toString();
         Address address = addressService.findById(selectedAddressId);
         Customer customer =customerService.findByUsername(principal.getName());
+        ShoppingCart cart = customer.getShoppingCart();
+
         if (customer.is_blocked()==true){
             return "redirect:/login";
         }
-        ShoppingCart cart = customer.getShoppingCart();
-        orderService.saveOrder(customer,address,cart,payment);
 
         String name = customer.getFirstName();
         model.addAttribute("name",name);
         model.addAttribute("value",principal);
-
-        return "successPage";
+        if(payment.equals("razorpay")){
+            Order order = orderService.saveOrder(customer,address,cart,payment);
+            session.setAttribute("orderId",order.getId());
+            String OrderId = order.getId().toString();
+            RazorpayClient razorpayClient = new RazorpayClient("rzp_test_NtvmKraF0rlqhk",
+                    "LryHfDVeQ7rx2lCRv9hemvRW");
+            JSONObject options = new JSONObject();
+            options.put("amount",order.getTotalPrice()*100);
+            options.put("currency","INR");
+            options.put("receipt",order.getId());
+            com.razorpay.Order orderRazorpay = razorpayClient.orders.create(options);
+            return orderRazorpay.toString();
+        } else {
+            orderService.saveOrder(customer,address,cart,payment);
+            JSONObject options = new JSONObject();
+            options.put("status","cash");
+            return options.toString();
+        }
+    }
+    @RequestMapping(value = "/verify-payment",method = RequestMethod.POST)
+    @ResponseBody
+    public String verifyPayment(@RequestBody Map<String,Object> jsonData,Principal principal,HttpSession session)throws Exception{
+        if (principal==null){
+            return "redirect:/login";
+        }
+        String secret = "LryHfDVeQ7rx2lCRv9hemvRW";
+        String order_id= jsonData.get("razorpay_order_id").toString();
+        String payment_id=jsonData.get("razorpay_payment_id").toString();
+        String signature=jsonData.get("razorpay_signature").toString();
+        JSONObject options = new JSONObject();
+        options.put("razorpay_order_id",order_id);
+        options.put("razorpay_payment_id",payment_id);
+        options.put("razorpay_signature",signature);
+        boolean status = Utils.verifyPaymentSignature(options,secret);
+        Order order = orderService.findOrderById((Long)session.getAttribute("orderId"));
+        if (status){
+            orderService.updatePayment(order,status);
+            Customer customer  = customerService.findByUsername(principal.getName());
+            ShoppingCart cart = customer.getShoppingCart();
+            shoppingCart.clearCart(cart);
+        }else {
+            orderService.updatePayment(order,status);
+        }
+        JSONObject response = new JSONObject();
+        response.put("status",status);
+        return response.toString();
     }
 
     @GetMapping("/orderTracking/{id}")
