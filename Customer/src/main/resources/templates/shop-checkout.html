@@ -223,14 +223,14 @@
                 <div class="row">
                     <div class="col-md-6" id="addressCards">
                         <div class="mb-25 d-md-flex">
-                            <h4 class="mt-md-2 me-md-5 pe-md-5">Choose address for shipping</h4>
+                            <h4 class="mt-md-2 me-md-5 pe-md-5" th:if="${addressList.size()>0}">Choose address for shipping</h4>
                             <div class="float-end">
-                                <a class="btn btn-primary p-2 ms-md-5">
-                                    <i class="material-icons md-plus"></i> Manage addresses
-                                </a>
+<!--                                <a class="btn btn-primary p-2 ms-md-5">-->
+<!--                                    <i class="material-icons md-plus"></i> Manage addresses-->
+<!--                                </a>-->
                             </div>
                         </div>
-                        <div class="card mb-5 mb-lg-0" th:each="address : ${addressList}">
+                        <div class="card mb-5 mb-lg-0" th:if="${addressList.size()>0}" th:each="address : ${addressList}">
                             <div class="card-header">
                                 <div class="form-check mb-0">
                                     <input class="form-check-input selectCheckBox" type="checkbox" th:value="${address.id}" id="selectCheckBox">
@@ -245,6 +245,9 @@
                                 <address>Phone: [(${address.phoneNumber})]</address>
                             </div>
                         </div>
+                    </div>
+                    <div th:if="${addressList.size()==0}">
+                        <h3>No Shipping Addresses!! Add one</h3>
                     </div>
                 </div>
                 <div class="row">
@@ -376,9 +379,7 @@
             const paymentMethod = document.getElementById("paymentMethod");
             addressId.value = checkedAddress;
             paymentMethod.value = payment_option;
-
             paymentStart(addressId.value, paymentMethod.value);
-
              }
         }
         const paymentStart = (addressId,paymentMethod) => {
@@ -430,8 +431,8 @@
                             console.log(response.error.metadata.payment_id);
                         });
                         rzp.open();
-                    } else if (response.status == "Cash") {
-                        location.href = '/order-confirmation';
+                    } else if (response.status == "cash") {
+                        location.href = '/shop/order-confirmation';
                     }
 
                 },
@@ -443,7 +444,7 @@
 
             function verifyPayment(payment) {
                 $.ajax({
-                    url: 'shop/verify-payment',
+                    url: '/shop/verify-payment',
                     method: 'post',
                     data: JSON.stringify(payment),
                     contentType: 'application/json',
@@ -451,7 +452,7 @@
                     success: (response) => {
                         if (response.status) {
                             alert("congrats!! Payment successful");
-                            location.href = '/order-confirmation'
+                            location.href = 'shop/order-confirmation'
                         } else {
                             alert("Payment failed!")
                         }

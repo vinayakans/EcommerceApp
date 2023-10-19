@@ -68,7 +68,7 @@ public class OrderController {
             JSONObject options = new JSONObject();
             options.put("amount",order.getTotalPrice()*100);
             options.put("currency","INR");
-            options.put("receipt",order.getId());
+            options.put("receipt",order.getId().toString());
             com.razorpay.Order orderRazorpay = razorpayClient.orders.create(options);
             return orderRazorpay.toString();
         } else {
@@ -106,7 +106,10 @@ public class OrderController {
         response.put("status",status);
         return response.toString();
     }
-
+    @GetMapping("/order-confirmation")
+    public String OrderConfirm(Model model){
+        return "order-confirmation";
+    }
     @GetMapping("/orderTracking/{id}")
     public String orderTracking(@PathVariable("id")Long id,Principal principal, Model model){
        boolean value =true;

@@ -39,6 +39,7 @@ public class OrderServiceImpl implements OrderService {
         order.setPaymentStatus("pending");
         order.setShippingFee(0.0);
         order.setShippingAddress(address);
+        System.out.println("1");
         order.setTotalPrice(cart.getTotalPrice());
         order.setNotes("thank you ");
         order.setOrderDelivered(false);
