@@ -1,10 +1,12 @@
 package com.ecom.library.library.dto;
 
 import com.ecom.library.library.models.Category;
+import com.ecom.library.library.models.Images;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
+import java.awt.*;
 import java.util.List;
 
 @Data
@@ -33,7 +35,7 @@ public class ProductDto {
 
 //    private Brand brand;
 
-    private String productImage;
+    private List<Images> productImage;
 
     private boolean is_activated;
 

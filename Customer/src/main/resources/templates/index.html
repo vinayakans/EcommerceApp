@@ -236,7 +236,6 @@
 									<div class="products-slick" data-nav="#slick-nav-1" >
 										<!-- product -->
 										<div class="product" th:each="product:${products}">
-
 											<div class="product-img">
 												<img  th:src="@{|/img/images/${product.productImage[0].getName()}|}" alt="">
 												<div class="product-label">
@@ -244,7 +243,6 @@
 													<span class="new">NEW</span>
 												</div>
 											</div>
-
 											<div class="product-body">
 												<p class="product-category"th:text="${product.category.name}"></p>
 												<h3 class="product-name" th:text="${product.name}"><a href="#">product name goes here</a></h3>
@@ -265,7 +263,8 @@
 											<form th:action="@{/add-to-cart}" method="post">
 												<input type="hidden" th:value="${product.id}" name="id">
 											<div class="add-to-cart">
-												<button type="submit" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+												<button type="submit" class="add-to-cart-btn" th:if="${product.currentQuantity >0}"> <i class="fa fa-shopping-cart"></i> add to cart</button>
+												<button class="add-to-cart-btn	" th:if="${product.currentQuantity <=0}"> <i class="fa fa-shopping-cart"></i> Notify Me</button>
 											</div>
 											</form>
 										</div>
@@ -342,7 +341,8 @@
 												</div>
 											</div>
 											<div class="add-to-cart">
-												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+												<button class="add-to-cart-btn" th:if="${product.currentQuantity > 0 }"> </i> add to cart</button>
+												<button class="add-to-cart-btn" th:if="${product.currentQuantity <= 0 }"> </i>Notify Me</button>
 											</div>
 										</div>
 										<!-- /product -->

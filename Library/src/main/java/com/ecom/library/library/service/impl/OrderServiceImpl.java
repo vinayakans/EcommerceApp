@@ -35,8 +35,8 @@ public class OrderServiceImpl implements OrderService {
         Order order = new Order();
         order.setOrderDate(new Date());
         order.setCustomer(customer);
+        order.setOrderStatus("pending");
         order.setPaymentMethod(payment);
-        order.setPaymentStatus("pending");
         order.setShippingFee(0.0);
         order.setShippingAddress(address);
         System.out.println("1");
@@ -104,7 +104,7 @@ public class OrderServiceImpl implements OrderService {
                     productRepository.save(product);
                 }
             }
-        order.setOrderStatus("cancle");
+        order.setOrderStatus("cancel");
         orderRepository.save(order);
         return null;
     }
@@ -179,7 +179,7 @@ public class OrderServiceImpl implements OrderService {
             order.setPaymentStatus("paid");
             orderRepository.save(order);
         }else {
-            order.setPaymentStatus("faild");
+            order.setPaymentStatus("failed");
             orderRepository.save(order);
         }
     }

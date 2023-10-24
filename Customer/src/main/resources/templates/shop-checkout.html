@@ -221,13 +221,15 @@
         <section class="mt-50 mb-50">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-6" id="addressCards">
+                </div>
+                <div class="row">
+                    <div class="col-md-6 d-inline" id="addressCards" >
                         <div class="mb-25 d-md-flex">
                             <h4 class="mt-md-2 me-md-5 pe-md-5" th:if="${addressList.size()>0}">Choose address for shipping</h4>
                             <div class="float-end">
-<!--                                <a class="btn btn-primary p-2 ms-md-5">-->
-<!--                                    <i class="material-icons md-plus"></i> Manage addresses-->
-<!--                                </a>-->
+                                                                <a class="btn  p-2 ms-md-5" href="#addaddress">
+                                                                    <i class="material-icons md-plus"></i> Add Address
+                                                                </a>
                             </div>
                         </div>
                         <div class="card mb-5 mb-lg-0" th:if="${addressList.size()>0}" th:each="address : ${addressList}">
@@ -248,39 +250,6 @@
                     </div>
                     <div th:if="${addressList.size()==0}">
                         <h3>No Shipping Addresses!! Add one</h3>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-25">
-                            <h4>Add New Address</h4>
-                        </div>
-                        <form method="post" th:action="@{/addNewAddress}" th:object="${addressDto}">
-                            <div class="form-group">
-                                <input type="text" name="billing_address" th:field="*{addressLine1}" required="" placeholder="Address  *">
-                            </div>
-                            <div class="form-group">
-                                <input type="text" name="billing_address2" th:field="*{addressLine2}" required="" placeholder="Address line2">
-                            </div>
-                            <div class="form-group">
-                                <input required="" type="text" name="city" th:field="*{city}" placeholder="City / Town *">
-                            </div>
-                            <div class="form-group">
-                                <input required="" type="text" name="state" th:field="*{state}" placeholder="State / County *">
-                            </div>
-                            <div class="form-group">
-                                <input required="" type="text" name="zipcode" th:field="*{pinCode}" placeholder="Postcode / ZIP *">
-                            </div>
-                            <div class="form-group">
-                                <input required="" type="text" name="phone" th:field="*{phoneNumber}" placeholder="Phone *">
-                            </div>
-                            <div class="form-group">
-                                <input required="" type="text" name="country" th:field="*{country}" placeholder="Country *">
-                            </div>
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-dark text-center">Add Address</button>
-                            </div>
-                        </form>
                     </div>
                     <div class="col-md-6">
                         <div class="order_review">
@@ -359,6 +328,39 @@
                         </div>
                     </div>
                 </div>
+                <div class="row" id="addaddress">
+                    <div class="col-md-6">
+                        <div class="mb-25">
+                            <h4>Add New Address</h4>
+                        </div>
+                        <form method="post" th:action="@{/addNewAddress}" th:object="${addressDto}">
+                            <div class="form-group">
+                                <input type="text" name="billing_address" th:field="*{addressLine1}" required="" placeholder="Address  *">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="billing_address2" th:field="*{addressLine2}" required="" placeholder="Address line2">
+                            </div>
+                            <div class="form-group">
+                                <input required="" type="text" name="city" th:field="*{city}" placeholder="City / Town *">
+                            </div>
+                            <div class="form-group">
+                                <input required="" type="text" name="state" th:field="*{state}" placeholder="State / County *">
+                            </div>
+                            <div class="form-group">
+                                <input required="" type="text" name="zipcode" th:field="*{pinCode}" placeholder="Postcode / ZIP *">
+                            </div>
+                            <div class="form-group">
+                                <input required="" type="text" name="phone" th:field="*{phoneNumber}" placeholder="Phone *">
+                            </div>
+                            <div class="form-group">
+                                <input required="" type="text" name="country" th:field="*{country}" placeholder="Country *">
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-dark text-center">Add Address</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
@@ -367,6 +369,7 @@
 
     </footer>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function placeOrder(formId) {
             const checkedAddress = $('.selectCheckBox:checked').val();
@@ -380,6 +383,7 @@
             addressId.value = checkedAddress;
             paymentMethod.value = payment_option;
             paymentStart(addressId.value, paymentMethod.value);
+
              }
         }
         const paymentStart = (addressId,paymentMethod) => {
@@ -392,19 +396,23 @@
                 type: 'POST',
                 dataType: 'json',
                 success: function (response) {
+                    console.log(response)
                     if (response.status == "created") {
+                        console.log(response.id)
                         let options = {
-                            key: 'rzp_test_NtvmKraF0rlqhk',
+                            key: 'rzp_test_QMWde1wPMCUdjm',
                             amount: response.amount,
                             currency: 'INR',
                             name: 'Myphone.IN',
                             description: 'Order Payment',
-                            image: '/imgs/theme/logo.svg',
+                            image: '/img/logo.png',
                             order_id: response.id,
                             handler: function (response) {
+                                console.log("1")
                                 console.log(response.razorpay_payment_id);
                                 console.log(response.razorpay_order_id);
                                 console.log(response.razorpay_signature);
+                                console.log("2")
                                 verifyPayment(response);
                             },
                             prefill: {
@@ -441,8 +449,10 @@
                     alert("something went wrong")
                 }
             });
+        }
 
             function verifyPayment(payment) {
+                console.log("vf")
                 $.ajax({
                     url: '/shop/verify-payment',
                     method: 'post',
@@ -452,17 +462,15 @@
                     success: (response) => {
                         if (response.status) {
                             alert("congrats!! Payment successful");
-                            location.href = 'shop/order-confirmation'
+                            location.href = '/shop/order-confirmation'
                         } else {
                             alert("Payment failed!")
                         }
                     }
                 });
             }
-        }
     </script>
     <!-- Vendor JS-->
-    <script th:src="@{/assets1/js/vendor/jquery-3.6.0.min.js}"></script>
     <script th:src="@{/assets1/js/vendor/jquery-migrate-3.3.0.min.js}"></script>
     <script th:src="@{/assets1/js/vendor/bootstrap.bundle.min.js}"></script>
     <script th:src="@{/assets1/js/plugins/slick.js}"></script>

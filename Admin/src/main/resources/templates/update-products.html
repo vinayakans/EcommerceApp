@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="~{fragments :: header}">
+    <link rel="stylesheet" th:href="@{/css/mystyle.css}" type="text/css">
 
     <title>Add Products</title>
 
@@ -116,8 +117,19 @@
                             </div>
                         </div>
                     </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4 d-flex">
+                                <div th:each="productImage:${productsDto.productImage}" class="productImage">
+
+                                        <img id="productImage" th:src="@{|/img/image-product/${productImage.getName()}|}" alt="No image">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </fieldset>
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" class="btn btn-primary  ml-5">Save</button>
             </form>
         </div>
         <!-- /.container-fluid -->

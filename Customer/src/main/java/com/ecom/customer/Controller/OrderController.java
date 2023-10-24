@@ -11,23 +11,18 @@ import com.ecom.library.library.service.ShoppingCartServices;
 import com.razorpay.RazorpayClient;
 import com.razorpay.Utils;
 import jakarta.servlet.http.HttpSession;
-import jakarta.transaction.Transactional;
-import org.apache.catalina.LifecycleState;
 import org.json.JSONObject;
-import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.HashMap;
 import java.util.Map;
 
 @Controller
 public class OrderController {
     private OrderService orderService;
     private CustomerService customerService;
-
     private ShoppingCartServices shoppingCart;
 
     public OrderController(OrderService orderService, CustomerService customerService, AddressService addressService,ShoppingCartServices shoppingCart) {
@@ -45,10 +40,11 @@ public class OrderController {
         if(principal == null){
             return "redirect:/login";
         }
-
         Long selectedAddressId = Long.parseLong(jsonData.get("addressId").toString());
+
         String payment = jsonData.get("paymentMethod").toString();
         Address address = addressService.findById(selectedAddressId);
+
         Customer customer =customerService.findByUsername(principal.getName());
         ShoppingCart cart = customer.getShoppingCart();
 
@@ -59,17 +55,19 @@ public class OrderController {
         String name = customer.getFirstName();
         model.addAttribute("name",name);
         model.addAttribute("value",principal);
+
         if(payment.equals("razorpay")){
             Order order = orderService.saveOrder(customer,address,cart,payment);
             session.setAttribute("orderId",order.getId());
             String OrderId = order.getId().toString();
-            RazorpayClient razorpayClient = new RazorpayClient("rzp_test_NtvmKraF0rlqhk",
-                    "LryHfDVeQ7rx2lCRv9hemvRW");
+            RazorpayClient razorpayClient = new RazorpayClient("rzp_test_QMWde1wPMCUdjm",
+                    "Lk3eaGmBH0rPzpzgYI18tT97");
             JSONObject options = new JSONObject();
             options.put("amount",order.getTotalPrice()*100);
             options.put("currency","INR");
             options.put("receipt",order.getId().toString());
             com.razorpay.Order orderRazorpay = razorpayClient.orders.create(options);
+            System.out.println(orderRazorpay);
             return orderRazorpay.toString();
         } else {
             orderService.saveOrder(customer,address,cart,payment);
@@ -84,7 +82,7 @@ public class OrderController {
         if (principal==null){
             return "redirect:/login";
         }
-        String secret = "LryHfDVeQ7rx2lCRv9hemvRW";
+        String secret = "Lk3eaGmBH0rPzpzgYI18tT97";
         String order_id= jsonData.get("razorpay_order_id").toString();
         String payment_id=jsonData.get("razorpay_payment_id").toString();
         String signature=jsonData.get("razorpay_signature").toString();
@@ -107,7 +105,17 @@ public class OrderController {
         return response.toString();
     }
     @GetMapping("/order-confirmation")
-    public String OrderConfirm(Model model){
+    public String OrderConfirm(Model model,Principal principal,HttpSession session){
+        boolean value = false;
+        if (principal!=null){
+            value = true;
+        }
+        Order order = orderService.findOrderById((Long)session.getAttribute("orderId"));
+        String name = customerService.findByUsername(principal.getName()).getFirstName();
+        model.addAttribute("order",order);
+        model.addAttribute("value",value);
+        model.addAttribute("name",name);
+        model.addAttribute("success","success");
         return "order-confirmation";
     }
     @GetMapping("/orderTracking/{id}")
