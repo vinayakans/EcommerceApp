@@ -2,6 +2,7 @@ package com.ecom.library.library.service;
 
 import com.ecom.library.library.models.*;
 
+import java.util.Date;
 import java.util.List;
 
 public interface OrderService {
@@ -18,5 +19,7 @@ public interface OrderService {
     int totalPending();
     Order findOrderById(Long id);
     void updatePayment(Order order,boolean status);
+    int monthlyEarning();
+    int dailyIncome();
 
 }

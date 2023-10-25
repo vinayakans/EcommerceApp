@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.security.Principal;
+import java.time.Month;
+import java.util.Calendar;
 
 @Controller
 public class AdminContoller {
@@ -31,10 +33,14 @@ public class AdminContoller {
             Admin admin = adminService.findByUsername(principal.getName());
             model.addAttribute("adminName",admin.getFirstname());
         }
+        int totalMonthlyIncome = orderService.monthlyEarning();
+        int totalDailyIncome;
+
 
         int orderCount = orderService.totalOrders();
         int pendingCount = orderService.totalPending();
 
+        model.addAttribute("monthlyIncome",totalMonthlyIncome);
         model.addAttribute("totalOrder",orderCount);
         model.addAttribute("totalPending",pendingCount);
 
