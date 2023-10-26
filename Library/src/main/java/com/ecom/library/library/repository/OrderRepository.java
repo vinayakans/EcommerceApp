@@ -6,6 +6,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.YearMonth;
 import java.util.Date;
 import java.util.List;
 
@@ -16,13 +19,17 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
     Order getById(@Param("id")Long id);
     @Query("select o from Order o where o.customer.id = :id")
     List<Order> customerOrderList(@Param("id")Long id);
-    @Query("select count(*) from Order o ")
+    @Query("select count(*) from Order o")
     int orderCount();
     @Query("select count(*) from Order o where o.orderStatus='pending'")
     int pendingCount();
-    @Query("select sum(od.totalPrice) from Order od where month(od.orderDate) = :month and od.paymentStatus ='paid'")
-    int monthlyIncome(@Param("month") int month);
-    @Query("select sum(o.totalPrice) from Order o where o.orderDate = :date and o.paymentStatus = 'paid'")
-    int dailyEarnings(Date date);
+//    @Query("select sum(o.totalPrice) from Order o where o.orderStatus = 'DELIVERED' and o.delivaryDate >= :date")
+//    Double currentDayTotalIncome(Date date);
+//    @Query(value = "SELECT COALESCE(SUM(o.totalPrice),0.0) from Order o where o.orderDate between :startDate and :endDate and o.orderStatus = 'DELIVERED'")
+//    Double getTotalAmountInRange(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+    @Query("select coalesce(sum(o.totalPrice),0.0) from Order o where o.orderDate between :startDate and :endDate and o.orderStatus = 'DELIVERED'")
+    Double monthlyIncome(Date startDate,Date endDate);
+    @Query("select coalesce(sum(o.totalPrice),0.0) from Order o where o.orderDate = :date and o.orderStatus = 'DELIVERED'")
+    Double DailyIncome(Date date);
 
 }

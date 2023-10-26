@@ -9,6 +9,9 @@ import com.ecom.library.library.service.ShoppingCartServices;
 import jdk.swing.interop.SwingInterOpUtils;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -139,7 +142,7 @@ public class OrderServiceImpl implements OrderService {
                 order.setOrderStatus(Order_status);
                  order.setOrderDelivered(true);
                 if(order.getPaymentMethod().equals("cod")){
-                    order.setPaymentStatus("Paid");
+                    order.setPaymentStatus("paid");
                 }
                 orderRepository.save(order);
             }
@@ -184,14 +187,4 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-    @Override
-    public int monthlyEarning() {
-        int month  = Calendar.getInstance().get(Calendar.MONTH)+1;
-        return orderRepository.monthlyIncome(month);
-    }
-
-    @Override
-    public int dailyIncome() {
-        return orderRepository.dailyEarnings(new Date());
-    }
 }
