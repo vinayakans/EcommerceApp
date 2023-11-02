@@ -29,7 +29,7 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
 //    Double getTotalAmountInRange(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
     @Query("select coalesce(sum(o.totalPrice),0.0) from Order o where o.orderDate between :startDate and :endDate and o.orderStatus = 'DELIVERED'")
     Double monthlyIncome(Date startDate,Date endDate);
-    @Query("select coalesce(sum(o.totalPrice),0.0) from Order o where o.orderDate = :date and o.orderStatus = 'DELIVERED'")
-    Double DailyIncome(Date date);
+    @Query("select coalesce(sum(o.totalPrice),0.0) from Order o where date(o.orderDate) = :date and o.orderStatus = 'DELIVERED'")
+    Double DailyIncome(@Param("date") LocalDate date);
 
 }

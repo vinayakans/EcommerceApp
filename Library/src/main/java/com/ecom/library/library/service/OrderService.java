@@ -19,6 +19,7 @@ public interface OrderService {
     int totalPending();
     Order findOrderById(Long id);
     void updatePayment(Order order,boolean status);
+    List<Order> findAll();
 
 
 

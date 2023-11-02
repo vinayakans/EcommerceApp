@@ -29,7 +29,6 @@ public class AdminDashboardImpl implements AdminDashboardService {
     @Override
     public Double DailyIncome() {
         LocalDate today = LocalDate.now();
-        Date todayDate = java.sql.Date.valueOf(today);
-        return orderRepository.DailyIncome(todayDate);
+        return orderRepository.DailyIncome(today);
     }
 }
