@@ -23,6 +23,7 @@ public class WalletHistory {
     private TransactionType transactionType;
 
     private LocalDate transactionDate;
+    private String TransactionStatus;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "wallet_id",referencedColumnName = "wallet_id")

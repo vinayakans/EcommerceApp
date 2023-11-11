@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.Collection;
 import java.util.List;
@@ -54,6 +55,10 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer")
     private List<ProductReview> reviews;
+
+    @ToString.Exclude
+    @OneToOne(mappedBy = "customer")
+    private Wallet wallet;
 
     @Override
     public String toString() {

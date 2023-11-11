@@ -1,13 +1,7 @@
 package com.ecom.customer.Controller;
 
-import com.ecom.library.library.models.Address;
-import com.ecom.library.library.models.Customer;
-import com.ecom.library.library.models.Order;
-import com.ecom.library.library.models.ShoppingCart;
-import com.ecom.library.library.service.AddressService;
-import com.ecom.library.library.service.CustomerService;
-import com.ecom.library.library.service.OrderService;
-import com.ecom.library.library.service.ShoppingCartServices;
+import com.ecom.library.library.models.*;
+import com.ecom.library.library.service.*;
 import com.razorpay.RazorpayClient;
 import com.razorpay.Utils;
 import jakarta.servlet.http.HttpSession;
@@ -23,14 +17,21 @@ import java.util.Map;
 public class OrderController {
     private OrderService orderService;
     private CustomerService customerService;
-    private ShoppingCartServices shoppingCart;
 
-    public OrderController(OrderService orderService, CustomerService customerService, AddressService addressService,ShoppingCartServices shoppingCart) {
+    public OrderController(OrderService orderService, CustomerService customerService,
+                           ShoppingCartServices shoppingCart, WalletService walletService,
+                           AddressService addressService) {
         this.orderService = orderService;
         this.customerService = customerService;
-        this.addressService = addressService;
         this.shoppingCart = shoppingCart;
+        this.walletService = walletService;
+        this.addressService = addressService;
     }
+
+    private ShoppingCartServices shoppingCart;
+    private WalletService walletService;
+
+
 
     private AddressService addressService;
 
@@ -69,6 +70,15 @@ public class OrderController {
             com.razorpay.Order orderRazorpay = razorpayClient.orders.create(options);
             System.out.println(orderRazorpay);
             return orderRazorpay.toString();
+
+        } else if (payment.equals("wallet")) {
+            WalletHistory walletHistory = walletService.debit(customer.getWallet(),cart.getTotalPrice());
+            Order order = orderService.saveOrder(customer,address,cart,payment);
+            walletService.saveOrderId(order,walletHistory);
+
+            JSONObject options = new JSONObject();
+            options.put("status","cash");
+            return options.toString();
         } else {
             orderService.saveOrder(customer,address,cart,payment);
             JSONObject options = new JSONObject();

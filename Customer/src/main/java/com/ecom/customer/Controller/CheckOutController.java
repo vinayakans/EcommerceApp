@@ -1,12 +1,10 @@
 package com.ecom.customer.Controller;
 
 import com.ecom.library.library.dto.AddressDto;
-import com.ecom.library.library.models.Address;
-import com.ecom.library.library.models.CartItem;
-import com.ecom.library.library.models.Customer;
-import com.ecom.library.library.models.ShoppingCart;
+import com.ecom.library.library.models.*;
 import com.ecom.library.library.repository.AddressRepository;
 import com.ecom.library.library.service.CustomerService;
+import com.ecom.library.library.service.WalletService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Controller;
@@ -20,12 +18,14 @@ import java.util.Set;
 @Controller
 public class CheckOutController {
     private CustomerService customerService;
-
     private AddressRepository addressRepository;
+    private WalletService walletService;
 
-    public CheckOutController(CustomerService customerService, AddressRepository addressRepository) {
+    public CheckOutController(CustomerService customerService, AddressRepository addressRepository,
+                              WalletService walletService) {
         this.customerService = customerService;
         this.addressRepository = addressRepository;
+        this.walletService = walletService;
     }
 
     @GetMapping("/checkout")
@@ -54,11 +54,14 @@ public class CheckOutController {
         if (addressList == null){
             model.addAttribute("addressNull","NO Shipping Addresses");
         }
+        Wallet wallet = walletService.findByCustomer(customer);
+        model.addAttribute("wallet",wallet);
+
         model.addAttribute("addressList",addressList);
 
         model.addAttribute("addressDto",new AddressDto());
 
-//       return "checkout";
+
         return "shop-checkout";
     }
 

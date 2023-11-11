@@ -10,7 +10,8 @@
     <meta property="og:type" content="">
     <meta property="og:url" content="">
     <meta property="og:image" content="">
-    <!-- Template CSS -->
+
+        <!-- Template CSS -->
     <link rel="stylesheet" th:href="@{/assets1/css/main.css?v=3.4}">
     <title th:text="${title}"></title>
 
@@ -317,6 +318,15 @@
                                             <p class="text-muted mt-5">Pay via Razorpay; you can pay with your credit card if you don't have a Razorpay account.</p>
                                         </div>
                                     </div>
+                                    <div class="custome-radio">
+                                        <input class="form-check-input" required="" type="radio" name="payment_option" value="wallet" id="exampleRadios6" th:disabled="${wallet.balance < shoppingCart.totalPrice ? 'disabled':null}">
+                                        <label class="form-check-label" for="exampleRadios6" data-bs-toggle="collapse" data-target="#paypal" aria-controls="wallet">Wallet<span>(Balance:[(${wallet.balance})])</span></label>
+                                        <div class="form-group collapse in" id="wallet">
+                                            <p class="text-muted mt-5">These wallets are specially designed for a merchant that sells products or services,
+                                                allowing users to use the wallet for that particular merchant only.</p>
+                                                <a th:href="@{/addCash}">Add Cash</a>
+                                        </div>
+                                    </div>
                                     <input type="hidden" id="addressId" name="shippingAddress" value="">
                                     <input type="hidden" id="paymentMethod" name="paymentMethod" value="">
                                 </div>
@@ -372,8 +382,10 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function placeOrder(formId) {
+            console.log('1')
             const checkedAddress = $('.selectCheckBox:checked').val();
             const payment_option = $('input[name = "payment_option"]:checked').val();
+            console.log(payment_option)
             if (!checkedAddress) {
                 alert("choose a shipping address")
                 return;
@@ -382,11 +394,13 @@
             const paymentMethod = document.getElementById("paymentMethod");
             addressId.value = checkedAddress;
             paymentMethod.value = payment_option;
+                console.log('1');
             paymentStart(addressId.value, paymentMethod.value);
 
              }
         }
         const paymentStart = (addressId,paymentMethod) => {
+            console.log('1')
             console.log(addressId)
             console.log(paymentMethod)
             $.ajax({
@@ -440,6 +454,8 @@
                         });
                         rzp.open();
                     } else if (response.status == "cash") {
+                        location.href = '/shop/order-confirmation';
+                    }else if(response.status=="wallet"){
                         location.href = '/shop/order-confirmation';
                     }
 
