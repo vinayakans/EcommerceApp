@@ -28,7 +28,7 @@
         <ul th:fragment="sidebar" class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/index}">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
@@ -43,6 +43,7 @@
                 <a class="nav-link" th:href="@{/index}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
+
             </li>
 
             <!-- Divider -->
@@ -53,23 +54,6 @@
                 Interface
             </div>
 
-            <!-- Nav Item - Pages Collapse Menu -->
-<!--            <li class="nav-item" th:fragment="">-->
-<!--                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"-->
-<!--                   aria-expanded="true" aria-controls="collapseTwo">-->
-<!--                    <i class="fas fa-fw fa-cog"></i>-->
-<!--                    <span>Components</span>-->
-<!--                </a>-->
-<!--                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">-->
-<!--                    <div class="bg-white py-2 collapse-inner rounded">-->
-<!--                        <h6 class="collapse-header">Custom Components:</h6>-->
-<!--                        <a class="collapse-item" th:href="@{/categories/0}" href="buttons.html">Manage Category</a>-->
-<!--                        <a class="collapse-item" th:href="@{/products}"  href="cards.html">Manage Product</a>-->
-<!--                        <a class="collapse-item" th:href=""  href="cards.html">Manage users</a>-->
-<!--                        <a class="collapse-item" th:href="@{/list-order}"  href="cards.html">Manage Order</a>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </li>-->
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/products}">
                     <i class="fas fa-fw fa-luggage-cart"></i>
@@ -87,11 +71,14 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/list-order}">
-                    <i class="fas fa-fw fa-chart-area"></i>
+                    <i class="fas fa-fw fa-notebook"></i>
                     <span>Manage Orders</span></a>
             </li>
-
-
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/coupons}">
+                    <i class="fas fa-fw fa-ticket-alt"></i>
+                    <span>Manage Coupons</span></a>
+            </li>
             <!-- Divider -->
             <hr class="sidebar-divider">
 

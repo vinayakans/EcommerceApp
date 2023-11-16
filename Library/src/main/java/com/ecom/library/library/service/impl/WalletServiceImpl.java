@@ -27,6 +27,7 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     public WalletHistory debit(Wallet wallet, double totalPrice) {
+
         double newBalance = wallet.getBalance()-totalPrice;
         DecimalFormat decimalFormat = new DecimalFormat("#0.00");
         String formattedBalance = decimalFormat.format(newBalance);
@@ -43,6 +44,8 @@ public class WalletServiceImpl implements WalletService {
 
         return walletHistoryRepository.save(walletHistory);
     }
+
+
 
     @Override
     public void saveOrderId(Order order, WalletHistory walletHistory) {
@@ -111,6 +114,19 @@ public class WalletServiceImpl implements WalletService {
         }
     }
 
+    @Override
+    public void returnCredit(Order order, Customer customer) {
+        Wallet wallet = customer.getWallet();
+        wallet.setBalance(wallet.getBalance() + order.getTotalPrice());
+        walletRepository.save(wallet);
+        WalletHistory walletHistory = new WalletHistory();
+        walletHistory.setWallet(wallet);
+        walletHistory.setTransactionDate(LocalDate.now());
+        walletHistory.setTransactionType(TransactionType.CREDITED);
+        walletHistory.setOrder(order);
+        walletHistory.setAmount(order.getTotalPrice());
+        walletHistoryRepository.save(walletHistory);
+    }
     private List<WalletHistoryDto> transferData(List<WalletHistory> walletHistoryList){
 
         List<WalletHistoryDto>walletHistoryDtoList=new ArrayList<>();

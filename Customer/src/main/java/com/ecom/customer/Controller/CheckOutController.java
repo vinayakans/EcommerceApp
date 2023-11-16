@@ -50,7 +50,7 @@ public class CheckOutController {
         else {
             model.addAttribute("shoppingCart",shoppingCartItem);
         }
-        List<Address> addressList = addressRepository.findAllById(customer.getId());
+        List<Address> addressList = customer.getAddress();
         if (addressList == null){
             model.addAttribute("addressNull","NO Shipping Addresses");
         }

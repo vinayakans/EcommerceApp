@@ -37,7 +37,8 @@ public class OrderController {
 
     @PostMapping("/placeOrder")
     @ResponseBody
-    public String placeOrder(@RequestBody Map<String,Object> jsonData, Principal principal , HttpSession session,Model model) throws Exception{
+    public String placeOrder(@RequestBody Map<String,Object> jsonData, Principal principal ,
+                             HttpSession session,Model model) throws Exception{
         if(principal == null){
             return "redirect:/login";
         }
@@ -59,6 +60,7 @@ public class OrderController {
 
         if(payment.equals("razorpay")){
             Order order = orderService.saveOrder(customer,address,cart,payment);
+            System.out.println(order.getId());
             session.setAttribute("orderId",order.getId());
             String OrderId = order.getId().toString();
             RazorpayClient razorpayClient = new RazorpayClient("rzp_test_QMWde1wPMCUdjm",
@@ -77,7 +79,7 @@ public class OrderController {
             walletService.saveOrderId(order,walletHistory);
 
             JSONObject options = new JSONObject();
-            options.put("status","cash");
+            options.put("status","wallet");
             return options.toString();
         } else {
             orderService.saveOrder(customer,address,cart,payment);
@@ -103,7 +105,7 @@ public class OrderController {
         boolean status = Utils.verifyPaymentSignature(options,secret);
         Order order = orderService.findOrderById((Long)session.getAttribute("orderId"));
         if (status){
-            orderService.updatePayment(order,status);
+            orderService. updatePayment(order,status);
             Customer customer  = customerService.findByUsername(principal.getName());
             ShoppingCart cart = customer.getShoppingCart();
             shoppingCart.clearCart(cart);

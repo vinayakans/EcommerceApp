@@ -11,7 +11,7 @@ public interface OrderService {
     List<Order> ListOrders();
     Order findById(Long id);
     List<Order> customerOrderList(Long customer_id);
-    Order CancleProduct(Long id);
+    Order CancelProduct(Long id);
     Order returnProduct(Long id);
     void updateOrderStatus(String Order_status,Long Order_id);
     void acceptOrder(String status,Long order_id);

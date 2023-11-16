@@ -6,6 +6,7 @@ import com.ecom.library.library.repository.OrderRepository;
 import com.ecom.library.library.repository.ProductRepository;
 import com.ecom.library.library.service.OrderService;
 import com.ecom.library.library.service.ShoppingCartServices;
+import com.ecom.library.library.service.WalletService;
 import jdk.swing.interop.SwingInterOpUtils;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +23,14 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
     private ProductRepository productRepository;
     private OrderDetailsRepository orderDetailsRepository;
+    private WalletService walletService;
 
-    public OrderServiceImpl(OrderRepository orderRepository, ProductRepository productRepository,
-                            OrderDetailsRepository orderDetailsRepository, ShoppingCartServices shoppingCartServices) {
+    public OrderServiceImpl(OrderRepository orderRepository, ProductRepository productRepository, OrderDetailsRepository orderDetailsRepository,
+                            WalletService walletService, ShoppingCartServices shoppingCartServices) {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
         this.orderDetailsRepository = orderDetailsRepository;
+        this.walletService = walletService;
         this.shoppingCartServices = shoppingCartServices;
     }
 
@@ -35,6 +38,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order saveOrder(Customer customer, Address address, ShoppingCart cart,String payment) {
+        System.out.println(payment);
         Order order = new Order();
         order.setOrderDate(new Date());
         order.setCustomer(customer);
@@ -66,12 +70,12 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderDetailsList(orderDetailsList);
         if (payment.equals("cod")){
 
-            order.setOrderStatus("pending");
+            order.setPaymentStatus("pending");
             shoppingCartServices.clearCart(cart);
 
         } else if (payment.equals("wallet")) {
 
-            order.setOrderStatus("pending");
+            order.setPaymentStatus("paid");
             shoppingCartServices.clearCart(cart);
         }
       return orderRepository.save(order);
@@ -96,8 +100,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order CancleProduct(Long id) {
+    public Order CancelProduct(Long id) {
         Order order = orderRepository.getReferenceById(id);
+        Customer customer = order.getCustomer();
         List<OrderDetails> orderDetailsList = order.getOrderDetailsList();
             for (OrderDetails orderDetails:orderDetailsList){
                 Product product = orderDetails.getProduct();
@@ -107,8 +112,11 @@ public class OrderServiceImpl implements OrderService {
                     productRepository.save(product);
                 }
             }
-        order.setOrderStatus("cancel");
+        order.setOrderStatus("cancelled");
         orderRepository.save(order);
+        if(order.getPaymentMethod().equals("wallet")||order.getPaymentMethod().equals("razorpay")){
+            walletService.returnCredit(order,customer);
+        }
         return null;
     }
 
@@ -144,7 +152,7 @@ public class OrderServiceImpl implements OrderService {
                 if(order.getPaymentMethod().equals("cod")){
                     order.setPaymentStatus("paid");
                 }
-                orderRepository.save(order);
+                 orderRepository.save(order);
             }
         }
     }

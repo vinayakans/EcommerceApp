@@ -49,8 +49,9 @@ public class userDashboardController {
         return "userDashboard";
     }
     @GetMapping("/cancle-item/{id}")
-    public String cancleItem(@PathVariable("id") Long id){
-        orderService.CancleProduct(id);
+    public String cancleItem(@PathVariable("id") Long id,Principal principal){
+        Customer customer = customerService.findByUsername(principal.getName());
+        orderService.CancelProduct(id);
         return "redirect:/userDashboard";
     }
     @GetMapping("/return-item/{id}")

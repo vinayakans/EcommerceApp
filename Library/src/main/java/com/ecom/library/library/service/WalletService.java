@@ -16,4 +16,5 @@ public interface WalletService {
     List<WalletHistoryDto> findAllById(Long id);
     WalletHistory findById(Long id);
     void updateWallet(WalletHistory walletHistory,Customer customer,boolean status);
+    void returnCredit(Order order,Customer customer);
 }
