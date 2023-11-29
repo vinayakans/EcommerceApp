@@ -99,5 +99,15 @@ public class CouponController {
              return "redirect:/coupons";
          }
     }
+    @GetMapping("/softDelete-coupon/{id}")
+    public String softDelete(@PathVariable("id")Long id,Model model,RedirectAttributes redirectAttributes,
+                             Principal principal){
+        if (principal == null){
+            return "redirect:/login";
+        }
+        couponService.softDelete(id);
+
+        return "redirect:/coupons";
+    }
 
 }

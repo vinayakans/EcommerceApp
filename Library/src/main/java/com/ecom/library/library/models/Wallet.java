@@ -1,14 +1,14 @@
 package com.ecom.library.library.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "wallets")
 public class Wallet {
@@ -16,6 +16,14 @@ public class Wallet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "wallet_id")
     private Long id;
+
+    @Override
+    public String toString() {
+        return "Wallet{" +
+                "id=" + id +
+                ", balance=" + balance +
+                '}';
+    }
 
     private double balance;
     @ToString.Exclude

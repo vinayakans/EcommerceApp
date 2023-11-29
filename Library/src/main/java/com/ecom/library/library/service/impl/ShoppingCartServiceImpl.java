@@ -6,6 +6,7 @@ import com.ecom.library.library.models.Product;
 import com.ecom.library.library.models.ShoppingCart;
 import com.ecom.library.library.repository.CartItemRepository;
 import com.ecom.library.library.repository.ShoppingCartRepository;
+import com.ecom.library.library.service.CustomerService;
 import com.ecom.library.library.service.ShoppingCartServices;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +17,16 @@ import java.util.Set;
 public class ShoppingCartServiceImpl implements ShoppingCartServices {
 
     private CartItemRepository cartItemRepository;
+    private CustomerService customerService;
+    private ShoppingCartRepository shoppingCartRepository;
 
-    public ShoppingCartServiceImpl(CartItemRepository cartItemRepository, ShoppingCartRepository shoppingCartRepository) {
+    public ShoppingCartServiceImpl(CartItemRepository cartItemRepository,
+                                   CustomerService customerService, ShoppingCartRepository shoppingCartRepository) {
         this.cartItemRepository = cartItemRepository;
+        this.customerService = customerService;
         this.shoppingCartRepository = shoppingCartRepository;
     }
 
-    private ShoppingCartRepository shoppingCartRepository;
     @Override
     public ShoppingCart addItemToCart(Product product, int quantity, Customer customer) {
         ShoppingCart cart = customer.getShoppingCart();
@@ -138,6 +142,16 @@ public class ShoppingCartServiceImpl implements ShoppingCartServices {
         cart.setTotalItems(0);
         cart.setTotalPrice(0.0);
         shoppingCartRepository.save(cart);
+    }
+
+    @Override
+    public ShoppingCart updateShoppingCartPrice(Double price, String username) {
+        System.out.println(price+"updateShoppingCart");
+        Customer customer = customerService.findByUsername(username);
+        ShoppingCart cart = customer.getShoppingCart();
+        cart.setTotalPrice(price);
+        shoppingCartRepository.save(cart);
+        return cart;
     }
 
 

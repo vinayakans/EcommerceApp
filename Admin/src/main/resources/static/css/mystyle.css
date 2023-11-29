@@ -10,3 +10,7 @@ img#productImage {
     height: 100%;
     object-fit: contain;
 }
+.table{
+    width: 100%;
+    height: 100%;
+}

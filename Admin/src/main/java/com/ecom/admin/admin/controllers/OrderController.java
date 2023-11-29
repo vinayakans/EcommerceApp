@@ -68,7 +68,6 @@ public class OrderController {
         }
 
     }
-    @Transactional
     @GetMapping("/order-details/{id}")
     public String orderDetails(@PathVariable("id") Long id,Principal principal,Model model){
         if (principal==null){
@@ -80,4 +79,10 @@ public class OrderController {
         model.addAttribute("orderDetailList",orderDetailsList);
         return "Order-details";
     }
+    @GetMapping("/cancel-item/{id}")
+    public String orderCancel(@PathVariable("id")Long id){
+        orderService.CancelProduct(id);
+        return "redirect:/list-order";
+    }
+
 }

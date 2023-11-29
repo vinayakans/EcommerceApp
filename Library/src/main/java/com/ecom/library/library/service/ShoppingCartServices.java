@@ -12,4 +12,6 @@ public interface ShoppingCartServices {
     ShoppingCart findCartItem(Customer customer);
 
     void clearCart(ShoppingCart cart);
+
+    ShoppingCart updateShoppingCartPrice(Double price,String username);
 }

@@ -11,6 +11,10 @@ public interface CouponService {
     List<CouponDto> findAll();
     CouponDto findById(Long id);
     void deleteCoupon(Long id);
+    void softDelete(Long id);
     boolean enableDisable(Long id);
+    boolean findByCouponCode(String couponCode);
+    Coupon findByCoupon(String coupon);
+    Double applyCoupon(String coupon,double price);
 
 }

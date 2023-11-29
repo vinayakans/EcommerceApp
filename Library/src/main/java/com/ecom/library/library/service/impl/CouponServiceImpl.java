@@ -73,6 +73,17 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
+    public void softDelete(Long id) {
+        Coupon coupon = couponRepository.getReferenceById(id);
+        if(coupon.isDeleted()==false){
+            coupon.setDeleted(true);
+        }
+        else
+            coupon.setDeleted(false);
+        couponRepository.save(coupon);
+    }
+
+    @Override
     public boolean enableDisable(Long id) {
         Coupon coupon = couponRepository.getReferenceById(id);
         if (coupon.isEnabled() == false){
@@ -84,6 +95,39 @@ public class CouponServiceImpl implements CouponService {
             couponRepository.save(coupon);
             return false;
         }
+    }
+
+    @Override
+    public boolean findByCouponCode(String couponCode) {
+        Coupon coupon = couponRepository.findCouponByCouponCode(couponCode);
+        if (coupon == null){
+            return false;
+        }
+        else if (coupon.isEnabled()||coupon.isExpired()){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public Coupon findByCoupon(String coupon) {
+        return couponRepository.findCouponByCouponCode(coupon);
+    }
+
+    @Override
+    public Double applyCoupon(String coupon, double price) {
+        Coupon coupon1 = couponRepository.findCouponByCouponCode(coupon);
+        double discountPrice = price*(coupon1.getPercentage()/100.0);
+
+        if (discountPrice>coupon1.getMaxOff()){
+            discountPrice = coupon1.getMaxOff();
+        }
+        coupon1.setCount(coupon1.getCount()-1);
+        couponRepository.save(coupon1);
+        double updatedPrice = price - discountPrice;
+        String formattedPrice = String.format("%.2f",updatedPrice);
+
+        return Double.parseDouble(formattedPrice);
     }
 
     public Coupon couponTransfer(CouponDto couponDto){

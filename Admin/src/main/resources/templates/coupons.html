@@ -247,6 +247,7 @@
                         <th scope="col">ExpDate</th>
                         <th scope="col">Update</th>
                         <th scope="col">delete</th>
+                        <th scope="col">soft delete</th>
                         <th scope="col">disable</th>
 
                     </tr>
@@ -262,6 +263,7 @@
                         <td th:text = "${coupon.expDate}"></td>
                         <td><a th:href="@{/update-coupon/{id} (id = ${coupon.id})}" class="btn btn-primary">Update</a></td>
                         <td><a th:href="@{/delete-coupon/{id} (id = ${coupon.id})}" class="btn btn-danger">Delete</a></td>
+                        <td><a th:href="@{/softDelete-coupon/{id} (id = ${coupon.id})}" class="btn btn-warning">SoftDelete</a></td>
                         <td><a th:if = "${coupon.isEnabled() == false}" th:href="@{/couponAction/{id} (id = ${coupon.id})}" class="btn btn-danger">Disabled</a>
                             <a th:if = "${coupon.isEnabled() == true}" th:href = "@{/couponAction/{id} (id = ${coupon.id})}" class="btn btn-success">Enabled</a></td>
                     </tr>

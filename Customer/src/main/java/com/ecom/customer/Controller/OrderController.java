@@ -29,10 +29,7 @@ public class OrderController {
     }
 
     private ShoppingCartServices shoppingCart;
-    private WalletService walletService;
-
-
-
+    private WalletService walletService
     private AddressService addressService;
 
     @PostMapping("/placeOrder")
@@ -57,6 +54,7 @@ public class OrderController {
         String name = customer.getFirstName();
         model.addAttribute("name",name);
         model.addAttribute("value",principal);
+        System.out.println(payment);
 
         if(payment.equals("razorpay")){
             Order order = orderService.saveOrder(customer,address,cart,payment);
@@ -76,13 +74,17 @@ public class OrderController {
         } else if (payment.equals("wallet")) {
             WalletHistory walletHistory = walletService.debit(customer.getWallet(),cart.getTotalPrice());
             Order order = orderService.saveOrder(customer,address,cart,payment);
+            session.setAttribute("orderId",order.getId());
             walletService.saveOrderId(order,walletHistory);
-
+            System.out.println("wallet");
             JSONObject options = new JSONObject();
             options.put("status","wallet");
             return options.toString();
         } else {
-            orderService.saveOrder(customer,address,cart,payment);
+            System.out.println(customer+""+address+""+cart+""+payment);
+            Order order = orderService.saveOrder(customer,address,cart,payment);
+            session.setAttribute("orderId",order.getId());
+            System.out.println("cash");
             JSONObject options = new JSONObject();
             options.put("status","cash");
             return options.toString();
@@ -123,6 +125,7 @@ public class OrderController {
             value = true;
         }
         Order order = orderService.findOrderById((Long)session.getAttribute("orderId"));
+        session.removeAttribute("orderId");
         String name = customerService.findByUsername(principal.getName()).getFirstName();
         model.addAttribute("order",order);
         model.addAttribute("value",value);

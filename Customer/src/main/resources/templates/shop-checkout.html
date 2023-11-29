@@ -219,6 +219,7 @@
                 </div>
             </div>
         </div>
+
         <section class="mt-50 mb-50">
             <div class="container">
                 <div class="row">
@@ -297,13 +298,6 @@
                                     <h5>Payment</h5>
                                 </div>
                                 <div class="payment_option">
-<!--                                    <div class="custome-radio">-->
-<!--                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios3" checked="">-->
-<!--                                        <label class="form-check-label" for="exampleRadios3" data-bs-toggle="collapse" data-target="#bankTranfer" aria-controls="bankTranfer">Direct Bank Transfer</label>-->
-<!--                                        <div class="form-group collapse in" id="bankTranfer">-->
-<!--                                            <p class="text-muted mt-5">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration. </p>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
                                     <div class="custome-radio">
                                         <input class="form-check-input" required="" type="radio" name="payment_option" value="cod" id="exampleRadios4" checked="">
                                         <label class="form-check-label" for="exampleRadios4" data-bs-toggle="collapse" data-target="#checkPayment" aria-controls="checkPayment">Cash On Delivery</label>
@@ -335,6 +329,32 @@
                            <div>
                                <button class="btn btn-dark" onclick="placeOrder('placeOrder-form')">Place Order</button>
                            </div>
+                            <div th:if="${success}" th:text="${success}" class="text-center alert alert-success"></div>
+                            <div th:if="${error}" th:text="${error}" class="text-center alert alert-danger"></div>
+                            <div th:if="${minAmount}" th:text="${minAmount}" class="text-center alert alert-danger"></div>
+                            <div class="toggle_info mt-20">
+                                <span><i class="fi-rs-label mr-10"></i><span class="text-muted">Have a coupon?</span> <a href="#coupon" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Click here to enter your code</a></span>
+                            </div>
+                            <div class="panel-collapse collapse coupon_form" id="coupon">
+                                <div class="panel-body">
+                                    <p class="mb-30 font-sm">If you have a coupon code, please apply it below.</p>
+                                    <form method="post" th:action="@{/applyCoupon}">
+                                        <div class="form-group">
+                                            <input type="text" th:value="${param.couponCode}" placeholder="Enter Coupon Code..." name="couponCode">
+                                        </div>
+                                        <div class="form-group">
+                                            <button class="btn  btn-md" type="submit" name="action" th:value="${param.couponCode == null ? 'apply' : 'remove'}"
+                                                    th:text="${param.couponCode == null ? 'Apply' : 'Remove'}"></button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="mt-25" th:each="coupon : ${coupons}" style="border: 1px solid #ccc; padding: 10px; margin: 10px;">
+                                <p th:text="${coupon.description}"></p>
+                                <p>Code: <strong th:text="${coupon.couponCode}"></strong></p>
+                                <p>Discount % : <strong th:text="${coupon.percentage}"></strong></p>
+                                <p>Min Order amount : <strong th:text="${coupon.minAmount}"></strong></p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -381,8 +401,23 @@
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const errorMessage = urlParams.get("errorMessage");
+        const couponCode = urlParams.get("couponCode");
+        console.log("Error message from URL: " + errorMessage);
+
+        // If couponCode is present, open the coupon form
+        if (couponCode) {
+            const couponForm = document.getElementById("coupon");
+            if (couponForm) {
+                couponForm.classList.add("show"); // Add the "show" class to make it visible
+            }
+        }
+        if (errorMessage) {
+            alert("Error: " + errorMessage);
+        }
         function placeOrder(formId) {
-            console.log('1')
             const checkedAddress = $('.selectCheckBox:checked').val();
             const payment_option = $('input[name = "payment_option"]:checked').val();
             console.log(payment_option)
@@ -390,11 +425,12 @@
                 alert("choose a shipping address")
                 return;
             }else {
+
             const addressId = document.getElementById("addressId");
             const paymentMethod = document.getElementById("paymentMethod");
+
             addressId.value = checkedAddress;
             paymentMethod.value = payment_option;
-                console.log('1');
             paymentStart(addressId.value, paymentMethod.value);
 
              }

@@ -24,6 +24,7 @@ public class OrderServiceImpl implements OrderService {
     private ProductRepository productRepository;
     private OrderDetailsRepository orderDetailsRepository;
     private WalletService walletService;
+    private ShoppingCartServices shoppingCartServices;
 
     public OrderServiceImpl(OrderRepository orderRepository, ProductRepository productRepository, OrderDetailsRepository orderDetailsRepository,
                             WalletService walletService, ShoppingCartServices shoppingCartServices) {
@@ -34,11 +35,8 @@ public class OrderServiceImpl implements OrderService {
         this.shoppingCartServices = shoppingCartServices;
     }
 
-    private ShoppingCartServices shoppingCartServices;
-
     @Override
     public Order saveOrder(Customer customer, Address address, ShoppingCart cart,String payment) {
-        System.out.println(payment);
         Order order = new Order();
         order.setOrderDate(new Date());
         order.setCustomer(customer);
@@ -73,7 +71,7 @@ public class OrderServiceImpl implements OrderService {
             order.setPaymentStatus("pending");
             shoppingCartServices.clearCart(cart);
 
-        } else if (payment.equals("wallet")) {
+        } else if (payment.equals("wallet")||payment.equals("razorpay")) {
 
             order.setPaymentStatus("paid");
             shoppingCartServices.clearCart(cart);
@@ -143,7 +141,10 @@ public class OrderServiceImpl implements OrderService {
     public void updateOrderStatus(String Order_status, Long order_id) {
         if(order_id != 0) {
             Order order = orderRepository.getReferenceById(order_id);
-             if(Order_status.equals("SHIPPED")){
+            if (Order_status.equals("Cancel")){
+                order.setOrderStatus("cancelled")   ;
+                orderRepository.save(order);
+            }else if(Order_status.equals("SHIPPED")){
                 order.setOrderStatus(Order_status);
                 orderRepository.save(order);
             }else if(Order_status.equals("DELIVERED")){

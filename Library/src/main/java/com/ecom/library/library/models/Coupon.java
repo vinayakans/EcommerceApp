@@ -1,13 +1,16 @@
 package com.ecom.library.library.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 import org.springframework.context.annotation.EnableLoadTimeWeaving;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "coupons")
 public class Coupon {
@@ -31,9 +34,10 @@ public class Coupon {
 
     private boolean enabled;
 
-    private int minAmount;
+    private boolean isDeleted;
 
-    private boolean isExpired(){
+    private int minAmount;
+    public boolean isExpired(){
         return (this.count == 0||this.expDate.isBefore(LocalDate.now()));
     }
 }

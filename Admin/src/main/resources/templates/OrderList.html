@@ -54,7 +54,7 @@
 <!--                        <td th:text="${order.id}"></td>-->
                         <th scope="row" th:text = "${order.customer.firstName}"></th>
                         <td th:text = "${order.orderDate}"></td>
-                        <td><select name="order-status" id="order-status" th:if="${order.orderStatus != 'DELIVERED' and order.orderStatus != 'pending'and order.orderStatus != 'cancle' and order.orderStatus != 'returned'}" th:data-order-id="${order.id}"  onchange="submitSelection(this.getAttribute('data-order-id'))">
+                        <td><select name="order-status" id="order-status" th:if="${order.orderStatus != 'DELIVERED' and order.orderStatus != 'pending'and order.orderStatus != 'cancle' and order.orderStatus != 'returned' and order.orderStatus != 'cancelled'}" th:data-order-id="${order.id}"  onchange="submitSelection(this.getAttribute('data-order-id'))">
                             <option value="" >SELECT</option>
                             <option value="SHIPPED">SHIPPED</option>
                             <option value="DELIVERED">DELIVERED</option>
@@ -65,6 +65,7 @@
                         <td th:text = "${order.paymentStatus}"></td>
                         <td>
                             <a th:if="${order.orderStatus == 'pending'}" th:href="@{/update-status/{id} (id = ${order.id})}" class="btn btn-success">Accept</a>
+                            <a th:if="${order.orderStatus == 'pending'}" th:href="@{/cancel-item/{id} (id = ${order.id})}" class="btn btn-danger">Cancel</a>
                         </td>
                         <td><a class="btn btn-primary" th:href="@{/order-details/{id} (id = ${order.id})}">View</a></td>
                     </tr>
