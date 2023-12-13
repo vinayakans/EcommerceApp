@@ -28,11 +28,9 @@ public class OrderController {
     }
 
     @ModelAttribute("selectedStatus")
-    public StatusForm getStatusForm() {
+    public StatusForm getStatusForm()  {
         return new StatusForm();
     }
-
-
     @GetMapping("/list-order")
     public String OrderController(Principal principal, Model model){
         if(principal == null){

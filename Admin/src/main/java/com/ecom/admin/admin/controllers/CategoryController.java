@@ -79,7 +79,7 @@ public class CategoryController {
         return categorySercive.findById(id);
     }
 
-    @GetMapping("/update-category")
+    @GetMapping("/update-category") 
     public String update( Category category, RedirectAttributes redirectAttributes) {
         System.out.println(category);
         try {

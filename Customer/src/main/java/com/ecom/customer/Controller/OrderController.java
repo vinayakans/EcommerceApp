@@ -29,7 +29,7 @@ public class OrderController {
     }
 
     private ShoppingCartServices shoppingCart;
-    private WalletService walletService
+    private WalletService walletService;
     private AddressService addressService;
 
     @PostMapping("/placeOrder")

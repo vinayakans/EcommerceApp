@@ -106,7 +106,6 @@ public class CouponController {
             return "redirect:/login";
         }
         couponService.softDelete(id);
-
         return "redirect:/coupons";
     }
 
